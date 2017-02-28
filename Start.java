@@ -1,5 +1,7 @@
 package saloonEvent;
-
+/*
+* Start
+*/
 public class Start extends Event{
 	
 	public Start(Time time){
@@ -8,7 +10,7 @@ public class Start extends Event{
 	
 	public void execute(State state, Store store){
 		state.setFlag(true);
-		store.StoreEvent();
+		store.StoreEvent(); //???????
 	}
 }
 
