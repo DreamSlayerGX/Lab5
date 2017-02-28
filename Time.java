@@ -11,7 +11,7 @@ public class Time {
 		int hour = (int)(Math.floor(time+openTime));
 		int minute = (int)(Math.round((time-Math.floor(time))*60));
 		
-		return(hour+":"minute);
+		return(hour+":"+minute);
 	}
 
 }
