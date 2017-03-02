@@ -13,6 +13,6 @@ public abstract class Event {
 		return time;
 	}
 	
-	public abstract void execute(State state, Store store);
+	public abstract void execute(Store store);
 
 }
