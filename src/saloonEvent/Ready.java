@@ -3,6 +3,9 @@ package saloonEvent;
 import simulator.Store;
 import simulator.Time;
 
+/**
+ * @author A, G, W
+ * */
 public class Ready extends CustomerEvent{
 	
 	

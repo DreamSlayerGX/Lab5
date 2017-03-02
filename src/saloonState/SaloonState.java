@@ -10,7 +10,7 @@ import simulator.State;
 /**
  * Saloon state takes care of stastistics and the queue and chairs available / occupied.
  * 
- * @author Gustav Strömberg
+ * @author A, G, W
  * */
 
 public class SaloonState extends State {
