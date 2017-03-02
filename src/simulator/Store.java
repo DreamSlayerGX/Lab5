@@ -1,6 +1,5 @@
 package simulator;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 /**
  * Contains a list of events sorted by time, low to high
@@ -21,7 +20,7 @@ public class Store {
 	public void storeEvent(Event event){
 		int place = 0;
 		for(Event e : eventList){
-			if(event.getTime().getTime() < e.getTime().getTime()){
+			if(event.getTime().getNumTime() < e.getTime().getNumTime()){
 				break;
 			}
 			place++;

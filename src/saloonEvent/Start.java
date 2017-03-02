@@ -12,7 +12,7 @@ public class Start extends Event {
 		super(time);
 	}
 
-	public void execute(State state, Store store) {
+	public void execute(Store store) {
 
 	}
 
