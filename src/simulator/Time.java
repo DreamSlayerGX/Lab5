@@ -11,7 +11,7 @@ public class Time {
 	public Time(Time time){
 		this.time = time.time;
 	}
-	public double getTime(){
+	public double getNumTime(){
 		return time;
 	}
 	public String toString(){

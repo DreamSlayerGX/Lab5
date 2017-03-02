@@ -8,14 +8,13 @@ public class Customer {
 	
 	private static int counter = 0; 
 	private int id;
-	private Time time;
+	private Time queueTime, cutTime;
 	private boolean satisfied;
 	
 	Random r = new Random();
 	
-	public Customer(boolean newCustomer){
-		if(newCustomer)
-			id = ++counter;
+	public Customer(){
+		id = ++counter;
 		
 	}
 
@@ -24,11 +23,15 @@ public class Customer {
 	}
 	
 	public void startQueueTime(Time time){
-		this.time = time;
+		queueTime = time;
 	}
 	
-	public void setSatisfied(boolean x){
-		satisfied = x;
+	public void setCuttingTime(Time time){
+		cutTime = time;
+	}
+	
+	public void setSatisfied(boolean yesNo){
+		satisfied = yesNo;
 	}
 	
 	public boolean getSatisfied(){
