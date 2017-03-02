@@ -1,5 +1,6 @@
 package saloonState;
 
+
 public class Statistics{
 	
 	private double timeIdle, timeWaiting;

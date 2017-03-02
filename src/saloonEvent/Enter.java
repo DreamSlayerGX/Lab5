@@ -37,13 +37,20 @@ public class Enter extends CustomerEvent {
 	public void execute(Store store) {
 		store.storeEvent(new Enter(new Time(getTime().getNumTime() + randomTime())));
 		
-		if(ss.getChairs() == 0){
-			ss.addToQueue(customer);
-			customer.startQueueTime(getTime());
-		} else {
-			ss.occupyChair();
-			store.storeEvent(new Ready(new Time(getTime().getNumTime() + randomTime()),
+		//Nu är closetiden i SaloonState
+		if(getTime().getNumTime() < ss.getCloseTime()){
+			if(ss.getChairs() == 0){
+					ss.addToQueue(customer);
+					customer.startQueueTime(getTime());
+			
+			} else {
+				ss.occupyChair();
+				store.storeEvent(new Ready(new Time(getTime().getNumTime() + randomTime()),
 					super.customer));
+			}
+		}
+		else{
+			ss.numLostCounter();
 		}
 	}
 	

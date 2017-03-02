@@ -19,8 +19,11 @@ public class SaloonState extends State {
 	private ArrayList<Customer> queue;
 	
 	private final int MAX_QUEUE, MAX_CHAIRS;
-	private int chairs, numReturning, numWaiting;
+	private int chairs, numReturning , numLost;
 	private Statistics stat;
+	private final double CLOSETIME;
+	private int numWaiting = returnQueue.size()+queue.size(); //för det är antalet som väntar
+	
 	
 	
 	
@@ -35,8 +38,24 @@ public class SaloonState extends State {
 		MAX_CHAIRS = chairs;
 		numReturning = 0;
 		numWaiting = 0;
+		CLOSETIME = 16.0;
 		
 	}
+	
+	/**
+	 * When called adds 1 to numLost
+	 */
+	public void numLostCounter(){
+		numLost++;
+	}
+	
+	/**
+	 * When called returns the time the shop closes.
+	 */
+	public double getCloseTime(){
+		return CLOSETIME;
+	}
+	
 	
 	/**
 	 * When called, decrements the amout of chairs
@@ -93,6 +112,17 @@ public class SaloonState extends State {
 		queue.remove(0);
 	}
 	
+	/**
+	 * Removes the first person in the return queue
+	 * 
+	 * @throws RuntimeException If the return queue is empty
+	 * */
+	public void rmFirstInReturnQueue(){
+		if(returnQueue.isEmpty())	
+			throw new RuntimeException("Det finns inga element i kön att ta bort");
+		returnQueue.remove(0);
+	}
+	
 	
 	/**
 	 * Removes the last person in the queue
@@ -118,6 +148,13 @@ public class SaloonState extends State {
 	 * */
 	public int getQueue(){
 		return queue.size();
+	}
+	
+	/**
+	 * @return int Total return queue size
+	 * */
+	public int returngetQueue(){
+		return returnQueue.size();
 	}
 	
 //Kan göra till en text-fil för en slut rapport
