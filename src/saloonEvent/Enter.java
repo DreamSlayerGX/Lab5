@@ -8,14 +8,21 @@ public class Enter extends CustomerEvent {
 	
 	
 	
-	public Enter(){
-		super(new Time(), true);
+	public Enter(Time time){
+		super(time, true);
 		
-	}
+	} 
 
+//Enter skapar nya enter ?
 	
-	public void execute(State state, Store store) {
-		
+	public void execute(Store store) {
+		store.storeEvent(new Enter(new Time(getTime()+1));
+		if(ss.getChairs() == 0){
+			ss.addToQueue(customer);
+			customer.startQueueTime(getTime());
+		} else
+			ss.occupyChair();
+	
 	}
 
 }
