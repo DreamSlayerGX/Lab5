@@ -22,7 +22,7 @@ public class SaloonState extends State {
 	private int chairs, numReturning , numLost;
 	private Statistics stat;
 	private final double CLOSETIME;
-	private int numWaiting = returnQueue.size()+queue.size(); //för det är antalet som väntar
+	private int numWaiting;// = returnQueue.size()+queue.size(); //för det är antalet som väntar
 	
 	
 	
@@ -35,11 +35,12 @@ public class SaloonState extends State {
 	 * */
 	public SaloonState(int queue, int chairs){
 		MAX_QUEUE = queue;
-		MAX_CHAIRS = chairs;
+		MAX_CHAIRS = this.chairs = chairs;
 		numReturning = 0;
 		numWaiting = 0;
 		CLOSETIME = 16.0;
-		
+		returnQueue = new ArrayList<Customer>();
+		this.queue = new ArrayList<Customer>();
 	}
 	
 	/**
@@ -125,14 +126,23 @@ public class SaloonState extends State {
 	
 	
 	/**
-	 * Removes the last person in the queue
+	 * Removes and returns the last person in the queue
 	 * 
 	 * @throws RuntimeException If the queue is empty
 	 * */
-	public void rmLastInQueue(){
-		if(queue.isEmpty())	
+	public Customer rmLastInQueue(){
+		if(queue.isEmpty() && returnQueue.isEmpty()){
 			throw new RuntimeException("Det finns inga element i kön att ta bort");
-		queue.remove(queue.size()-1);
+		}
+		Customer tmpcustomer;
+		if(queue.isEmpty()){
+			tmpcustomer = returnQueue.get(returnQueue.size()-1);
+			returnQueue.remove(returnQueue.size()-1);	
+		}else{
+			tmpcustomer = queue.get(queue.size()-1);
+			queue.remove(queue.size()-1);
+		}
+		return tmpcustomer;
 	}
 	
 	
@@ -160,6 +170,10 @@ public class SaloonState extends State {
 //Kan göra till en text-fil för en slut rapport
 	public String stats(){
 		return "";
+	}
+	
+	public int getQueueSize(){
+		return MAX_QUEUE;
 	}
 	
 
