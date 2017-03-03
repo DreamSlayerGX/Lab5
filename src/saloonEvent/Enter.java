@@ -7,7 +7,7 @@ import simulator.Time;
  * Enter is an event that represents when a customer enters the store. Mainly two things
  * will happen: 1) Get sited in a chair; 2) stand in queue.
  * 
- * @author A, G, W
+ * @author Anton, Gustav, William
  * */
 public class Enter extends CustomerEvent {
 	
@@ -37,7 +37,7 @@ public class Enter extends CustomerEvent {
 	public void execute(Store store) {
 		store.storeEvent(new Enter(new Time(getTime().getNumTime() + randomTime())));
 		
-		//Nu är closetiden i SaloonState
+		//Nu Ã¤r closetiden i SaloonState
 		if(getTime().getNumTime() < ss.getCloseTime()){
 			if(ss.getChairs() == 0){
 					ss.addToQueue(customer);
