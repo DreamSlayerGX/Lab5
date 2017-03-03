@@ -1,7 +1,7 @@
 package simulator;
 /**
  * 
- * @author A, G, W
+ * @author Anton, Gustav, William
  *
  */
 public abstract class Event {
