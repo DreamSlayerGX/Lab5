@@ -4,7 +4,7 @@ import simulator.Store;
 import simulator.Time;
 
 /**
- * @author A, G, W
+ * @author Anton, Gustav, William
  * */
 public class Ready extends CustomerEvent{
 	
