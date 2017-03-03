@@ -10,7 +10,7 @@ import simulator.State;
 /**
  * Saloon state takes care of stastistics and the queue and chairs available / occupied.
  * 
- * @author Gustav Strömberg
+ * @author Anton, Gustav, William
  * */
 
 public class SaloonState extends State {
@@ -19,8 +19,11 @@ public class SaloonState extends State {
 	private ArrayList<Customer> queue;
 	
 	private final int MAX_QUEUE, MAX_CHAIRS;
-	private int chairs, numReturning, numWaiting;
+	private int chairs, numReturning , numLost;
 	private Statistics stat;
+	private final double CLOSETIME;
+	private int numWaiting = returnQueue.size()+queue.size(); //fÃ¶r det Ã¤r antalet som vÃ¤ntar
+	
 	
 	
 	
@@ -35,8 +38,24 @@ public class SaloonState extends State {
 		MAX_CHAIRS = chairs;
 		numReturning = 0;
 		numWaiting = 0;
+		CLOSETIME = 16.0;
 		
 	}
+	
+	/**
+	 * When called adds 1 to numLost
+	 */
+	public void numLostCounter(){
+		numLost++;
+	}
+	
+	/**
+	 * When called returns the time the shop closes.
+	 */
+	public double getCloseTime(){
+		return CLOSETIME;
+	}
+	
 	
 	/**
 	 * When called, decrements the amout of chairs
@@ -45,7 +64,7 @@ public class SaloonState extends State {
 	 * */
 	public void occupyChair(){
 		if(chairs <= 0)
-			throw new RuntimeException("Stolar <= 0 när metoden anropades");
+			throw new RuntimeException("Stolar <= 0 nÃ¤r metoden anropades");
 		chairs--;
 	}
 	
@@ -56,7 +75,7 @@ public class SaloonState extends State {
 	 * */
 	public void freeChair(){
 		if(chairs >= MAX_CHAIRS)
-			throw new RuntimeException("Stolar >= max antal stolar när metoden anropades");
+			throw new RuntimeException("Stolar >= max antal stolar nÃ¤r metoden anropades");
 		chairs++;
 	}
 	
@@ -67,7 +86,7 @@ public class SaloonState extends State {
 	 * */
 	public void addToQueue(Customer customer){
 		if(queue.size() + returnQueue.size() >= MAX_QUEUE)
-			throw new RuntimeException("queue.size >= MAX_QUEUE när metoden anropades");
+			throw new RuntimeException("queue.size >= MAX_QUEUE nÃ¤r metoden anropades");
 		queue.add(customer);
 	}
 	
@@ -78,7 +97,7 @@ public class SaloonState extends State {
 	 * */
 	public void addToReturnQueue(Customer customer){
 		if(queue.size() + returnQueue.size() >= MAX_QUEUE)
-			throw new RuntimeException("queue.size >= MAX_QUEUE när metoden anropades");
+			throw new RuntimeException("queue.size >= MAX_QUEUE nÃ¤r metoden anropades");
 		returnQueue.add(customer);
 	}
 	
@@ -89,8 +108,19 @@ public class SaloonState extends State {
 	 * */
 	public void rmFirstInQueue(){
 		if(queue.isEmpty())	
-			throw new RuntimeException("Det finns inga element i kön att ta bort");
+			throw new RuntimeException("Det finns inga element i kÃ¶n att ta bort");
 		queue.remove(0);
+	}
+	
+	/**
+	 * Removes the first person in the return queue
+	 * 
+	 * @throws RuntimeException If the return queue is empty
+	 * */
+	public void rmFirstInReturnQueue(){
+		if(returnQueue.isEmpty())	
+			throw new RuntimeException("Det finns inga element i kÃ¶n att ta bort");
+		returnQueue.remove(0);
 	}
 	
 	
@@ -101,7 +131,7 @@ public class SaloonState extends State {
 	 * */
 	public void rmLastInQueue(){
 		if(queue.isEmpty())	
-			throw new RuntimeException("Det finns inga element i kön att ta bort");
+			throw new RuntimeException("Det finns inga element i kÃ¶n att ta bort");
 		queue.remove(queue.size()-1);
 	}
 	
@@ -120,7 +150,14 @@ public class SaloonState extends State {
 		return queue.size();
 	}
 	
-//Kan göra till en text-fil för en slut rapport
+	/**
+	 * @return int Total return queue size
+	 * */
+	public int returngetQueue(){
+		return returnQueue.size();
+	}
+	
+//Kan gÃ¶ra till en text-fil fÃ¶r en slut rapport
 	public String stats(){
 		return "";
 	}

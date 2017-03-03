@@ -1,5 +1,9 @@
 package simulator;
-
+/**
+ * 
+ * @author Anton, Gustav, William
+ *
+ */
 public abstract class Event {
 	
 	private Time time;
@@ -14,5 +18,13 @@ public abstract class Event {
 	}
 	
 	public abstract void execute(Store store);
+	
+	/**
+	 * 
+	 * toString override. Returns the class name
+	 */
+	public String toString(){
+		return this.getClass().getSimpleName();
+	}
 
 }

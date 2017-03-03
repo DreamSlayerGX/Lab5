@@ -1,4 +1,3 @@
-
 package simulator;
 
 public class Time {
@@ -11,6 +10,8 @@ public class Time {
 	public Time(Time time){
 		this.time = time.time;
 	}
+	
+	
 	public double getNumTime(){
 		return time;
 	}
