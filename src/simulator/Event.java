@@ -17,7 +17,7 @@ public abstract class Event {
 		return time;
 	}
 	
-	public abstract void execute(Store store);
+	public abstract void execute(Store store, State state);
 	
 	/**
 	 * 

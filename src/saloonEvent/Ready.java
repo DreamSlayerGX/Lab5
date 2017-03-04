@@ -1,5 +1,7 @@
 package saloonEvent;
 
+import saloonState.SaloonState;
+import simulator.State;
 import simulator.Store;
 import simulator.Time;
 
@@ -31,6 +33,8 @@ public class Ready extends CustomerEvent{
 	 * @param Store To store new object in the store-array
 	 * */
 	public void execute(Store store) {
+		System.out.println("customer "+customer.getID() +" ready at "+getTime());
+
 		ss.freeChair();
 		
 		if(ss.returngetQueue() > 0){
@@ -49,12 +53,19 @@ public class Ready extends CustomerEvent{
 	
 	//20 % chance that the customer will return
 		if(randomTime()/2 < 0.2)
-			store.storeEvent(new Return(new Time(getTime().getNumTime() + randomTime()/2)),
-					super.customer);
+			store.storeEvent(new Return(new Time(getTime().getNumTime() + randomTime()/2),
+					super.customer));
 			
 		
 		
 		
+	}
+
+
+	
+	public void execute(Store store, State state) {
+		ss = (SaloonState) state;
+		execute(store);
 	}
 
 }

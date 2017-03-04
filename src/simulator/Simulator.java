@@ -1,5 +1,8 @@
 package simulator;
 
+import java.util.ArrayList;
+
+import saloonEvent.Enter;
 
 /**
  * Main part of the simulator where the simulators runs.
@@ -8,35 +11,24 @@ package simulator;
  * */
 public class Simulator {
 	
-	private State state;
+
 	private Store store;
 	
 	/**
 	 * Constructor, initiates the run method
 	 * */
 	public Simulator(){
-		run();
+
+		store = new Store();
+
 	}
+	
 	
 	/**
 	 * Activates the next event while the program is running
 	 * */
-	public void run(){
-		while(!state.getFlag()){
-			
-		store.nextEvent().execute(store);
-			
-			
-		}
-		
-	}
+
 	
-	public static void main(String[] args){
-		Simulator sim = new Simulator();
-		
-		
-		
-		
-	}
+	
 
 }

@@ -15,7 +15,6 @@ public abstract class CustomerEvent extends Event {
 		super(time);
 		if(newCustomer)
 			customer = new Customer();
-		
 	}
 	
 //Generates a new time (double) that is used when creating new events

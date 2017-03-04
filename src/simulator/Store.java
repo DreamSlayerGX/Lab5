@@ -12,13 +12,13 @@ public class Store {
 	 * Initializes
 	 */
 	public Store(){
-		eventList = new LinkedList();
+		eventList = new LinkedList<Event>();
 	}
 	/**
 	 * adds a new event to the list, placed depenting on time of the event
 	 */
 	public void storeEvent(Event event){
-		int place = 0;
+		int place = 0;		
 		for(Event e : eventList){
 			if(event.getTime().getNumTime() < e.getTime().getNumTime()){
 				break;
@@ -26,6 +26,7 @@ public class Store {
 			place++;
 		}
 		eventList.add(place, event);
+		
 	}
 	/**
 	 * returns and removes the first event in the list

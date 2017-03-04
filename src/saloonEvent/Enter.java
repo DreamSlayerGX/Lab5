@@ -1,5 +1,7 @@
 package saloonEvent;
 
+import saloonState.SaloonState;
+import simulator.State;
 import simulator.Store;
 import simulator.Time;
 
@@ -35,10 +37,14 @@ public class Enter extends CustomerEvent {
 	 * */
 	
 	public void execute(Store store) {
-		store.storeEvent(new Enter(new Time(getTime().getNumTime() + randomTime())));
-		
+		if(getTime().getNumTime() < ss.getCloseTime()){
+			store.storeEvent(new Enter(new Time(getTime().getNumTime() + randomTime())));
+		}
+		System.out.println("customer "+customer.getID() +" enters at "+getTime());
 		//Nu är closetiden i SaloonState
 		if(getTime().getNumTime() < ss.getCloseTime()){
+			//System.out.println(ss.getChairs());
+
 			if(ss.getChairs() == 0){
 					ss.addToQueue(customer);
 					customer.startQueueTime(getTime());
@@ -52,6 +58,10 @@ public class Enter extends CustomerEvent {
 		else{
 			ss.numLostCounter();
 		}
+	}
+	public void execute(Store store, State state) {
+		ss = (SaloonState) state;
+		execute(store);
 	}
 	
 	
