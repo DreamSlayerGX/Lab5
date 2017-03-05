@@ -20,7 +20,7 @@ public class SaloonSim extends Simulator{
 		state = new SaloonState(20,20);
 	}
 	public void run(){
-		store.storeEvent(new Enter(new Time(.5)));
+		store.storeEvent(new Enter(new Time(.5), state, EventTypes.ENTER));
 
 		while(!state.getFlag()){
 			
