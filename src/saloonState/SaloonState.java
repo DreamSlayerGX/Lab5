@@ -23,7 +23,7 @@ public class SaloonState extends State {
 	private Statistics stat;
 	
 	private final int MAX_QUEUE, MAX_CHAIRS;
-	private int chairs, numReturning , numLost;
+	private int chairs;
 	private final double CLOSETIME;
 	private int numWaiting;// = returnQueue.size()+queue.size(); //för det är antalet som väntar
 	
@@ -39,7 +39,6 @@ public class SaloonState extends State {
 	public SaloonState(int queue, int chairs){
 		MAX_QUEUE = queue;
 		MAX_CHAIRS = this.chairs = chairs;
-		numReturning = 0;
 		numWaiting = 0;
 		CLOSETIME = 16.0;
 		
@@ -49,15 +48,10 @@ public class SaloonState extends State {
 		stat = new Statistics(this);
 	}
 	
-	/**
-	 * When called adds 1 to numLost
-	 */
-	public void numLostCounter(){
-		numLost++;
-	}
+
 	
 	/**
-	 * When called returns the time the shop closes.
+	 * @return double The time the shop closes.
 	 */
 	public double getCloseTime(){
 		return CLOSETIME;
@@ -169,7 +163,7 @@ public class SaloonState extends State {
 	/**
 	 * @return int Total return queue size
 	 * */
-	public int returngetQueue(){
+	public int returnGetQueue(){
 		return returnQueue.size();
 	}
 	
@@ -189,8 +183,15 @@ public class SaloonState extends State {
 		
 		if(ce.getEventType() == EventTypes.ENTER){
 			
-			if()
-		
+			if(ce.isQueueing()){
+				stat.setTimeQueueing(ce.getCustomer().getQueueTime());
+				
+			}
+			
+			if(ce.getCustomer().leavingCustomer()){
+				stat.setCustomersLost();
+			}
+				
 			
 			
 			
@@ -198,13 +199,17 @@ public class SaloonState extends State {
 		
 		if(ce.getEventType() == EventTypes.READY){
 			
+			if(ce.getCustomer().getSatisfied()){
+				stat.setPeopleCut();
+				
+			}
 			
 			
 		}
 		
 		if(ce.getEventType() == EventTypes.RETURN){
 			
-			
+			stat.setCustomersReturned();
 		}
 		
 	}
