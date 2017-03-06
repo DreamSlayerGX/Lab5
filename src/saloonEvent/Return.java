@@ -20,23 +20,27 @@ public class Return extends CustomerEvent{
 	 * If a chair is free, occupy a chair. If there is space in queue, place customer last in return queue. If queue is full of returning customers, take a walk(create new return) and come back
 	 */
 	public void execute(Store store) {
-		System.out.println("customer "+customer.getID() +" returns at "+getTime());
+		//System.out.println("customer "+customer.getID() +" returns at "+getTime());
 
 		//om ledig stol finns
 		if(ss.getChairs() > 0){
 			ss.occupyChair();
+
 			customer.setCuttingTime(getTime().getNumTime());
+
 			store.storeEvent(new Ready(
 					new Time(getTime().getNumTime() + randomTime()),
 					super.customer,
 					ss,
 					EventTypes.READY));
 			
+
 		}else if(ss.returnGetQueue()+ss.getQueue() < ss.getQueueSize()){//det finns plats i k�n
 			ss.addToReturnQueue(customer);
 			customer.startQueueTime(getTime().getNumTime());
 			
 		}else if(ss.returnGetQueue()+ss.getQueue() >= ss.getQueueSize()){//full k�
+
 			if(ss.getQueue() > 0){//det finns n�gon i den vanliga k�n
 				ss.rmLastInQueue();
 				ss.addToReturnQueue(customer);
@@ -50,6 +54,8 @@ public class Return extends CustomerEvent{
 						id));
 			}
 		}
+		setChanged();
+		notifyObservers(this);
 	}
 
 

@@ -38,7 +38,9 @@ public class Enter extends CustomerEvent {
 	 * */
 	
 	public void execute(Store store) {
+
 	//Nu är closetiden i SaloonState
+
 		if(getTime().getNumTime() < ss.getCloseTime()){
 			store.storeEvent(new Enter(
 					new Time(getTime().getNumTime() + randomTime()),
@@ -46,27 +48,30 @@ public class Enter extends CustomerEvent {
 					id));
 			
 
-			if(ss.getChairs() == 0 && ss.returnGetQueue() + ss.getQueue() < ss.getQueueSize()){
+
+			if(ss.getChairs() == 0 && (ss.returngetQueue()+ss.getQueue() < ss.getQueueSize())){
 				queueing = true;
 				ss.addToQueue(customer);
 				customer.startQueueTime(getTime().getNumTime());
-					
+			
 			} else {
-				ss.occupyChair();
-				customer.setCuttingTime(getTime().getNumTime());
-				store.storeEvent(new Ready(
-						new Time(getTime().getNumTime() + randomTime()),
-						super.customer,
-						ss,
-						EventTypes.READY));
+				if(ss.getChairs() > 0){
+					ss.occupyChair();
+					store.storeEvent(new Ready(
+							new Time(getTime().getNumTime() + randomTime()),
+							super.customer,
+							ss,
+							EventTypes.READY));
+				}
+
 			}
+			setChanged();
+			notifyObservers(this);
 		}
 		else{
 			customer.setLeavingCustomer(true);
 		}
 		
-		setChanged();
-		notifyObservers(this);
 	}
 	public void execute(Store store, State state) {
 		ss = (SaloonState) state;

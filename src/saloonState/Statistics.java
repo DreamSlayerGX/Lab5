@@ -5,8 +5,10 @@ public class Statistics{
 	
 	private SaloonState ss;
 	
+
 	private double timeIdle, timeQueueing;
 	private int customersLost, customersReturned, peopleCut;
+
 	
 	Statistics(SaloonState ss){
 		this.ss = ss;
@@ -59,10 +61,13 @@ public class Statistics{
 		peopleCut++;
 	}
 	
+
+
 //Avrage queueing time
 	public double getAvrageQueueingTime(){
 		return (double)(timeQueueing / peopleCut);
 	}
+
 
 
 	

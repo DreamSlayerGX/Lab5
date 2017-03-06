@@ -36,4 +36,8 @@ public class Store {
 	public Event nextEvent(){	
 		return eventList.poll();
 	}
+	
+	public LinkedList returnlist(){
+		return eventList;
+	}
 }

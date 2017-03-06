@@ -35,33 +35,56 @@ public class Ready extends CustomerEvent{
 	 * @param Store To store new object in the store-array
 	 * */
 	public void execute(Store store) {
-		System.out.println("customer "+customer.getID() +" ready at "+getTime());
+		//System.out.println("customer "+customer.getID() +" ready at "+getTime());
 
 		ss.freeChair();
 		
-		if(ss.returnGetQueue() > 0){
+
+		if(ss.returngetQueue() > 0){
+			Customer tmp = super.ss.returnqueuearray();
+			tmp.endQueueTime(getTime().getNumTime());
+			store.storeEvent(new Ready(
+					new Time(getTime().getNumTime() + randomTime()),
+					tmp,
+					ss,
+					EventTypes.READY));
+
 			ss.rmFirstInReturnQueue();
 			ss.occupyChair();
+
+					
+			
 		}
 		else{
 			if(ss.getQueue() > 0){
+				Customer tmp = super.ss.queuearray();
+				tmp.endQueueTime(getTime().getNumTime());
+				store.storeEvent(new Ready(
+						new Time(getTime().getNumTime() + randomTime()),
+						tmp,
+						ss,
+						EventTypes.READY));
+				
 				ss.rmFirstInQueue();;
 				ss.occupyChair();
+				
+						
 			}
 			
 		}
+
 		customer.setCuttingTime(getTime().getNumTime());
+
 	
 	//20 % chance that the customer will return
 		if(randomTime()/2 < 0.2)
 			store.storeEvent(new Return(new Time(getTime().getNumTime() + randomTime()/2),
 					super.customer,
 					ss,
-					EventTypes.RETURN));
-			
+					EventTypes.RETURN));	
 		
-		
-		
+		setChanged();
+		notifyObservers(this);
 	}
 
 
