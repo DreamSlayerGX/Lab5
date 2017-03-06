@@ -8,8 +8,8 @@ public class Customer {
 	
 	private static int counter = 0; 
 	private int id;
-	private Time queueTime, cutTime;
-	private boolean satisfied;
+	private double queueTime, cutTime;
+	private boolean satisfied, leavingCustomer;
 	
 	Random r = new Random();
 	
@@ -22,11 +22,13 @@ public class Customer {
 		return id;
 	}
 	
-	public void startQueueTime(Time time){
+	
+//Set methods
+	public void startQueueTime(double time){
 		queueTime = time;
 	}
 	
-	public void setCuttingTime(Time time){
+	public void setCuttingTime(double time){
 		cutTime = time;
 	}
 	
@@ -34,8 +36,26 @@ public class Customer {
 		satisfied = yesNo;
 	}
 	
+	
+//Get methods
+	public double getQueueTime(){
+		return queueTime;
+	}
+	
+	public double getCutTime(){
+		return cutTime;
+	}
+	
 	public boolean getSatisfied(){
 		return satisfied;
+	}
+	
+	public void setLeavingCustomer(boolean yesNo){
+		leavingCustomer = yesNo;
+	}
+	
+	public boolean leavingCustomer(){
+		return leavingCustomer;
 	}
 
 }
