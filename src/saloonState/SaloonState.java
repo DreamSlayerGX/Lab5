@@ -41,12 +41,25 @@ public class SaloonState extends State {
 		MAX_CHAIRS = this.chairs = chairs;
 		numReturning = 0;
 		numWaiting = 0;
-		CLOSETIME = 16.0;
+		CLOSETIME = 12.0;
 		
 		returnQueue = new ArrayList<Customer>();
 		this.queue = new ArrayList<Customer>();
 		
 		stat = new Statistics(this);
+	}
+	
+	/**
+	 * When called returns first customer in queue
+	 */
+	public Customer queuearray(){
+		return queue.get(0);
+	}
+	/**
+	 * When called returns first customer in returnqueue
+	 */
+	public Customer returnqueuearray(){
+		return returnQueue.get(0);
 	}
 	
 	/**
@@ -65,7 +78,7 @@ public class SaloonState extends State {
 	
 	
 	/**
-	 * When called, decrements the amout of chairs
+	 * When called, decrements the amount of chairs
 	 * 
 	 * @throws RuntimeException If the amount of chairs are less or equal to nil
 	 * */
@@ -92,8 +105,8 @@ public class SaloonState extends State {
 	 * @throws RuntimeException If the total size of the queues are larger than the max size of the queue
 	 * */
 	public void addToQueue(Customer customer){
-		if(queue.size() + returnQueue.size() >= MAX_QUEUE)
-			throw new RuntimeException("queue.size >= MAX_QUEUE när metoden anropades");
+		if(queue.size() + returnQueue.size() > MAX_QUEUE)
+			throw new RuntimeException("Queue:queue.size >= MAX_QUEUE när metoden anropades");
 		queue.add(customer);
 	}
 	
@@ -103,8 +116,8 @@ public class SaloonState extends State {
 	 * @throws RuntimeException If the total size of the queues are larger than the max size of the queue
 	 * */
 	public void addToReturnQueue(Customer customer){
-		if(queue.size() + returnQueue.size() >= MAX_QUEUE)
-			throw new RuntimeException("queue.size >= MAX_QUEUE när metoden anropades");
+		if(queue.size() + returnQueue.size() > MAX_QUEUE)
+			throw new RuntimeException("Return:queue.size >= MAX_QUEUE när metoden anropades");
 		returnQueue.add(customer);
 	}
 	
@@ -172,44 +185,60 @@ public class SaloonState extends State {
 	public int returngetQueue(){
 		return returnQueue.size();
 	}
-	
-//Kan göra till en text-fil för en slut rapport
-	public void output(String output){
-		System.out.println(output);
-	}
-	
 	public int getQueueSize(){
 		return MAX_QUEUE;
 	}
-
 	
+	 /**
+	  * 
+	  * @param output
+	  */
+	public void output(String output){
+		System.out.println(output/*+" - Queue: "+getQueue()+" - ReturnQueue "+returngetQueue()*/);
+	}
+	
+	public int getIdle(){
+		return chairs;
+	}
+	
+	public double getTIdle(){
+		return stat.getTIdle();
+	}
+	public double getTWait(){
+		return stat.getTWait();
+	}
+	public int getCut(){
+		return stat.getCut();
+	}
+	public int getLost(){
+		return stat.getLost();
+	}
+	public int getReturned(){
+		return stat.getReturned();
+	}
+	
+	
+	/**
+	 * @param Observable o, Object arg
+	 */
 	public void update(Observable o, Object arg) {
-		output(o.toString());
+		//output(o.toString());
 		CustomerEvent ce = (CustomerEvent) arg;
 		
 		if(ce.getEventType() == EventTypes.ENTER){
-			
-			if()
-		
-			
-			
-			
+			output(o.toString());
+			//if()
 		}
 		
 		if(ce.getEventType() == EventTypes.READY){
-			
+			output(o.toString());
 			
 			
 		}
 		
 		if(ce.getEventType() == EventTypes.RETURN){
-			
+			output(o.toString());
 			
 		}
-		
 	}
-	
-	
-	
-
 }

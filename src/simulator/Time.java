@@ -1,7 +1,7 @@
 package simulator;
 
 public class Time {
-	private final double OPENTIME = 8.0;
+	private final double OPENTIME = 8.0;//ta bort vi kör time 0.0 till infinite
 	private double time;
 	public Time(double time){
 		this.time = time;

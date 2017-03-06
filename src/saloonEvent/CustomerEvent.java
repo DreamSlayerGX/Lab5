@@ -1,5 +1,6 @@
 package saloonEvent;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 import saloonState.EventTypes;
@@ -13,6 +14,7 @@ public abstract class CustomerEvent extends Event {
 	protected SaloonState ss;
 	protected EventTypes id;
 	protected boolean queueing = false;
+	private DecimalFormat df = new DecimalFormat("#0.00");
 	
 	public CustomerEvent(Time time, boolean newCustomer, SaloonState ss, EventTypes id) {
 		super(time);
@@ -23,10 +25,23 @@ public abstract class CustomerEvent extends Event {
 	}
 	
 	public String toString(){
+		
+		/*old
 		String output = 
 						"Customer " + customer.getID() + " " + 
 						this.getClass().getSimpleName() + " at " + getTime();
-
+		 */
+		String output = "  " +
+		df.format(getTime().getNumTime()) +"\t" +
+		id + "\t" + 
+		customer.getID() + "\t" + 
+		df.format(ss.getIdle()) + "\t" + 
+		df.format(ss.getTIdle()) + "\t" +
+		df.format(ss.getTWait()) + "\t" + 
+		(ss.getQueue() + ss.returngetQueue()) + "\t" +
+		ss.getCut() + "\t" + 
+		ss.getLost() + "\t" +
+		ss.getReturned() + "\t";
 		return output;
 	}
 	
