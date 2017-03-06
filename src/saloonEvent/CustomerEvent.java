@@ -47,10 +47,14 @@ public abstract class CustomerEvent extends Event {
 	
 	public EventTypes getEventType(){
 		return id;
-	}
+	} 
 	
 	public boolean isQueueing(){
 		return queueing;
+	}
+	
+	public Customer getCustomer(){
+		return customer;
 	}
 	
 //Generates a new time (double) that is used when creating new events

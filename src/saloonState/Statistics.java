@@ -5,39 +5,71 @@ public class Statistics{
 	
 	private SaloonState ss;
 	
-	private double timeIdle, timeWaiting;
-	private int customersReturned, cut, lost;
+
+	private double timeIdle, timeQueueing;
+	private int customersLost, customersReturned, peopleCut;
+
 	
 	Statistics(SaloonState ss){
 		this.ss = ss;
 	}
-	
-	public double getTIdle(){
+
+//Getters and setters below	
+
+//Idle
+	public double getTimeIdle() {
 		return timeIdle;
 	}
-	public double getTWait(){
-		return timeWaiting;
+
+	public void setTimeIdle(double timeIdle) {
+		this.timeIdle += timeIdle;
 	}
-	public int getReturned(){
+
+//Queueing
+	public double getTimeQueueing() {
+		return timeQueueing;
+	}
+
+	public void setTimeQueueing(double timeQueueing) {
+		this.timeQueueing += timeQueueing;
+	}
+
+//Customers lost
+	public int getCustomersLost() {
+		return customersLost;
+	}
+
+	public void setCustomersLost() {
+		customersLost++;
+	}
+
+//Customers returned
+	public int getCustomersReturned() {
 		return customersReturned;
 	}
-	public int getCut(){
-		return cut;
-	}
-	public int getLost(){
-		return lost;
-	}
-	public void addCut(){
-		cut++;
-	}
-	public void addLost(){
-		lost++;
-	}
-	public void addReturned(){
+
+	public void setCustomersReturned() {
 		customersReturned++;
 	}
+
+//People cut
+	public int getPeopleCut() {
+		return peopleCut;
+	}
+
+	public void setPeopleCut() {
+		peopleCut++;
+	}
 	
-	
+
+
+//Avrage queueing time
+	public double getAvrageQueueingTime(){
+		return (double)(timeQueueing / peopleCut);
+	}
+
+
+
 	
 
 }

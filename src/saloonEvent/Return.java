@@ -25,18 +25,22 @@ public class Return extends CustomerEvent{
 		//om ledig stol finns
 		if(ss.getChairs() > 0){
 			ss.occupyChair();
-			customer.startCutTime(getTime().getNumTime());
+
+			customer.setCuttingTime(getTime().getNumTime());
+
 			store.storeEvent(new Ready(
 					new Time(getTime().getNumTime() + randomTime()),
 					super.customer,
 					ss,
 					EventTypes.READY));
 			
-		}else if(ss.returngetQueue()+ss.getQueue() < ss.getQueueSize()){//det finns plats i k�n
+
+		}else if(ss.returnGetQueue()+ss.getQueue() < ss.getQueueSize()){//det finns plats i k�n
 			ss.addToReturnQueue(customer);
 			customer.startQueueTime(getTime().getNumTime());
 			
-		}else if(ss.returngetQueue()+ss.getQueue() >= ss.getQueueSize()){//full k�
+		}else if(ss.returnGetQueue()+ss.getQueue() >= ss.getQueueSize()){//full k�
+
 			if(ss.getQueue() > 0){//det finns n�gon i den vanliga k�n
 				ss.rmLastInQueue();
 				ss.addToReturnQueue(customer);

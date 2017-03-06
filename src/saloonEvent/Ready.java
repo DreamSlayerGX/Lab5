@@ -39,6 +39,7 @@ public class Ready extends CustomerEvent{
 
 		ss.freeChair();
 		
+
 		if(ss.returngetQueue() > 0){
 			Customer tmp = super.ss.returnqueuearray();
 			tmp.endQueueTime(getTime().getNumTime());
@@ -47,6 +48,7 @@ public class Ready extends CustomerEvent{
 					tmp,
 					ss,
 					EventTypes.READY));
+
 			ss.rmFirstInReturnQueue();
 			ss.occupyChair();
 
@@ -70,8 +72,9 @@ public class Ready extends CustomerEvent{
 			}
 			
 		}
-		customer.endCutTime(getTime().getNumTime());
-		
+
+		customer.setCuttingTime(getTime().getNumTime());
+
 	
 	//20 % chance that the customer will return
 		if(randomTime()/2 < 0.2)

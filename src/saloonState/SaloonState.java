@@ -23,7 +23,7 @@ public class SaloonState extends State {
 	private Statistics stat;
 	
 	private final int MAX_QUEUE, MAX_CHAIRS;
-	private int chairs, numReturning , numLost;
+	private int chairs;
 	private final double CLOSETIME;
 	private int numWaiting;// = returnQueue.size()+queue.size(); //för det är antalet som väntar
 	
@@ -39,7 +39,6 @@ public class SaloonState extends State {
 	public SaloonState(int queue, int chairs){
 		MAX_QUEUE = queue;
 		MAX_CHAIRS = this.chairs = chairs;
-		numReturning = 0;
 		numWaiting = 0;
 		CLOSETIME = 12.0;
 		
@@ -49,6 +48,7 @@ public class SaloonState extends State {
 		stat = new Statistics(this);
 	}
 	
+
 	/**
 	 * When called returns first customer in queue
 	 */
@@ -68,9 +68,10 @@ public class SaloonState extends State {
 	public void numLostCounter(){
 		numLost++;
 	}
+
 	
 	/**
-	 * When called returns the time the shop closes.
+	 * @return double The time the shop closes.
 	 */
 	public double getCloseTime(){
 		return CLOSETIME;
@@ -182,7 +183,7 @@ public class SaloonState extends State {
 	/**
 	 * @return int Total return queue size
 	 * */
-	public int returngetQueue(){
+	public int returnGetQueue(){
 		return returnQueue.size();
 	}
 	public int getQueueSize(){
@@ -222,23 +223,42 @@ public class SaloonState extends State {
 	 * @param Observable o, Object arg
 	 */
 	public void update(Observable o, Object arg) {
-		//output(o.toString());
+		output(o.toString());
 		CustomerEvent ce = (CustomerEvent) arg;
 		
 		if(ce.getEventType() == EventTypes.ENTER){
-			output(o.toString());
-			//if()
+      
+      if(ce.isQueueing()){
+				stat.setTimeQueueing(ce.getCustomer().getQueueTime());
+				
+			}
+			
+			if(ce.getCustomer().leavingCustomer()){
+				stat.setCustomersLost();
+			}
+	
+			
 		}
 		
+	
+		
 		if(ce.getEventType() == EventTypes.READY){
-			output(o.toString());
+			
+			if(ce.getCustomer().getSatisfied()){
+				stat.setPeopleCut();
+				
+			}
+    
+
 			
 			
 		}
 		
 		if(ce.getEventType() == EventTypes.RETURN){
-			output(o.toString());
+
 			
+			stat.setCustomersReturned();
+
 		}
 	}
 }

@@ -15,7 +15,6 @@ import simulator.Time;
 public class Enter extends CustomerEvent {
 	
 	
-	
 	/**
 	 * Constructor that calls the parent's constructor to set time and creating a
 	 * new customer that is connected to this event.
@@ -39,13 +38,16 @@ public class Enter extends CustomerEvent {
 	 * */
 	
 	public void execute(Store store) {
-		//Nu �r closetiden i SaloonState
+
+	//Nu är closetiden i SaloonState
+
 		if(getTime().getNumTime() < ss.getCloseTime()){
 			store.storeEvent(new Enter(
 					new Time(getTime().getNumTime() + randomTime()),
 					ss, 
 					id));
 			
+
 
 			if(ss.getChairs() == 0 && (ss.returngetQueue()+ss.getQueue() < ss.getQueueSize())){
 				queueing = true;
@@ -61,12 +63,13 @@ public class Enter extends CustomerEvent {
 							ss,
 							EventTypes.READY));
 				}
+
 			}
 			setChanged();
 			notifyObservers(this);
 		}
 		else{
-			ss.numLostCounter();
+			customer.setLeavingCustomer(true);
 		}
 		
 	}
