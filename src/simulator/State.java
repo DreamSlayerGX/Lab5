@@ -1,6 +1,9 @@
 package simulator;
 
-public class State {
+import java.util.Observable;
+import java.util.Observer;
+
+public abstract class State implements Observer {
 	
 	private boolean flag;
 	
@@ -15,5 +18,7 @@ public class State {
 		return flag;
 	}
 	
+	
+	public abstract void update(Observable o, Object arg);
 
 }

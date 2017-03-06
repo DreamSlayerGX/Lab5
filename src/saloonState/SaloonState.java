@@ -1,8 +1,10 @@
 package saloonState;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 import saloonEvent.Customer;
+import saloonEvent.CustomerEvent;
 import simulator.State;
 
 
@@ -18,9 +20,10 @@ public class SaloonState extends State {
 	private ArrayList<Customer> returnQueue;
 	private ArrayList<Customer> queue;
 	
+	private Statistics stat;
+	
 	private final int MAX_QUEUE, MAX_CHAIRS;
 	private int chairs, numReturning , numLost;
-	private Statistics stat;
 	private final double CLOSETIME;
 	private int numWaiting;// = returnQueue.size()+queue.size(); //för det är antalet som väntar
 	
@@ -39,8 +42,11 @@ public class SaloonState extends State {
 		numReturning = 0;
 		numWaiting = 0;
 		CLOSETIME = 16.0;
+		
 		returnQueue = new ArrayList<Customer>();
 		this.queue = new ArrayList<Customer>();
+		
+		stat = new Statistics(this);
 	}
 	
 	/**
@@ -168,13 +174,42 @@ public class SaloonState extends State {
 	}
 	
 //Kan göra till en text-fil för en slut rapport
-	public String stats(){
-		return "";
+	public void output(String output){
+		System.out.println(output);
 	}
 	
 	public int getQueueSize(){
 		return MAX_QUEUE;
 	}
+
+	
+	public void update(Observable o, Object arg) {
+		output(o.toString());
+		CustomerEvent ce = (CustomerEvent) arg;
+		
+		if(ce.getEventType() == EventTypes.ENTER){
+			
+			if()
+		
+			
+			
+			
+		}
+		
+		if(ce.getEventType() == EventTypes.READY){
+			
+			
+			
+		}
+		
+		if(ce.getEventType() == EventTypes.RETURN){
+			
+			
+		}
+		
+	}
+	
+	
 	
 
 }

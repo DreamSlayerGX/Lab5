@@ -1,10 +1,13 @@
 package simulator;
+
+import java.util.Observable;
+
 /**
  * 
  * @author Anton, Gustav, William
  *
  */
-public abstract class Event {
+public abstract class Event extends Observable {
 	
 	private Time time;
 	
@@ -23,8 +26,8 @@ public abstract class Event {
 	 * 
 	 * toString override. Returns the class name
 	 */
-	public String toString(){
-		return this.getClass().getSimpleName();
-	}
+//	public String toString(){
+//		return this.getClass().getSimpleName();
+//	}
 
 }

@@ -16,4 +16,10 @@ public class Start extends Event {
 
 	}
 
+	@Override
+	public void execute(Store store, State state) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

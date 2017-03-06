@@ -1,5 +1,6 @@
 package saloonEvent;
 
+import saloonState.EventTypes;
 import saloonState.SaloonState;
 import simulator.State;
 import simulator.Store;
@@ -17,9 +18,10 @@ public class Ready extends CustomerEvent{
 	 * 
 	 * @param Time A Time-object.
 	 * */
-	public Ready(Time time, Customer customer) {
-		super(time, false);
+	public Ready(Time time, Customer customer, SaloonState ss, EventTypes id) {
+		super(time, false, ss, id);
 		super.customer = customer;
+		this.addObserver(ss);
 		
 		
 	}
@@ -54,7 +56,9 @@ public class Ready extends CustomerEvent{
 	//20 % chance that the customer will return
 		if(randomTime()/2 < 0.2)
 			store.storeEvent(new Return(new Time(getTime().getNumTime() + randomTime()/2),
-					super.customer));
+					super.customer,
+					ss,
+					EventTypes.RETURN));
 			
 		
 		

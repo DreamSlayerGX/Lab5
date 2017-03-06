@@ -1,5 +1,6 @@
 package saloonEvent;
 
+import saloonState.EventTypes;
 import saloonState.SaloonState;
 import simulator.State;
 import simulator.Store;
@@ -7,9 +8,10 @@ import simulator.Time;
 
 public class Return extends CustomerEvent{
 
-	public Return(Time time, Customer customer) {
-		super(time, false);
+	public Return(Time time, Customer customer, SaloonState ss, EventTypes id) {
+		super(time, false, ss, id);
 		super.customer = customer;
+		this.addObserver(ss);
 		
 	}
 
@@ -23,17 +25,28 @@ public class Return extends CustomerEvent{
 		//om ledig stol finns
 		if(ss.getChairs() > 0){
 			ss.occupyChair();
-			store.storeEvent(new Ready(new Time(getTime().getNumTime() + randomTime()), super.customer));
+			store.storeEvent(new Ready(
+					new Time(getTime().getNumTime() + randomTime()),
+					super.customer,
+					ss,
+					EventTypes.READY));
+			
 		}else if(ss.returngetQueue()+ss.getQueue() < ss.getQueueSize()){//det finns plats i kön
 			ss.addToReturnQueue(customer);
 			customer.startQueueTime(getTime());
+			
 		}else if(ss.returngetQueue()+ss.getQueue() >= ss.getQueueSize()){//full kö
 			if(ss.getQueue() > 0){//det finns någon i den vanliga kön
 				ss.rmLastInQueue();
 				ss.addToReturnQueue(customer);
 				customer.startQueueTime(getTime());
+				
 			}else{//return kön är full
-				store.storeEvent(new Return(new Time(getTime().getNumTime() + randomTime()), ss.rmLastInQueue()));
+				store.storeEvent(new Return(
+						new Time(getTime().getNumTime() + randomTime()),
+						ss.rmLastInQueue(),
+						ss,
+						id));
 			}
 		}
 	}
