@@ -23,7 +23,7 @@ public class Customer {
 	 * Makes the customer a unique id
 	 */
 	public Customer(){
-		id = ++counter;
+		id = counter++;
 		
 	}
 	

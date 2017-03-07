@@ -1,5 +1,7 @@
 package saloonState;
 
+import java.text.DecimalFormat;
+
 /**
  * Takes care of all statistics while the program is running
  * 

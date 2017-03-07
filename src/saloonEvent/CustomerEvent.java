@@ -82,12 +82,6 @@ public abstract class CustomerEvent extends Event {
 		return customer;
 	}
 	
-//Generates a new time (double) that is used when creating new events
-	protected double randomTime(){
-		Random r = new Random();
-		return 2*r.nextDouble();
-		
-	}
 	  
 	
 }
