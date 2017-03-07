@@ -18,12 +18,13 @@ public class Enter extends CustomerEvent {
 	/**
 	 * Constructor that calls the parent's constructor to set time and creating a
 	 * new customer that is connected to this event.
-	 * @param state 
-	 * 
-	 * @param Time A Time-object.
+	 *
+	 * @param time to set time to new event
+	 * @param ss to be able to send request to SaloonState in order to update data during the simulation
+	 * @param id what type of event it is
 	 * */
 	public Enter(Time time, SaloonState ss, EventTypes id){
-		super(time, true, ss, id);
+		super(time, true, ss, id); //true indicates that this is a new customer
 		this.addObserver(ss);
 		
 	} 
@@ -39,39 +40,33 @@ public class Enter extends CustomerEvent {
 	
 	public void execute(Store store) {
 
-	//Nu är closetiden i SaloonState
-
 		if(getTime().getNumTime() < ss.getCloseTime()){
 			store.storeEvent(new Enter(
-					new Time(getTime().getNumTime() + randomTime()),
+					new Time(getTime().getNumTime() + ss.nextEnter()),
 					ss, 
 					id));
 			
-
+			
 
 			if(ss.getChairs() == 0 && (ss.returnGetQueue()+ss.getQueue() < ss.getQueueSize())){
 				queueing = true;
 				ss.addToQueue(customer);
 				customer.startQueueTime(getTime().getNumTime());
 			
-			} else {
-				if(ss.getChairs() > 0){
+			} else if(ss.getChairs() > 0){
 					ss.occupyChair();
 					store.storeEvent(new Ready(
-							new Time(getTime().getNumTime() + randomTime()),
+							new Time(getTime().getNumTime() + ss.nextRandCutTime()),
 							super.customer,
 							ss,
 							EventTypes.READY));
-				}
-
+			} else {
+				customer.setLeavingCustomer(true);
 			}
 			setChanged();
 			notifyObservers(this);
 		}
-		else{
-			customer.setLeavingCustomer(true);
-		}
-		
+	
 	}
 	public void execute(Store store, State state) {
 		ss = (SaloonState) state;

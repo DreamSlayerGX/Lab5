@@ -7,7 +7,11 @@ import saloonState.EventTypes;
 import saloonState.SaloonState;
 import simulator.Event;
 import simulator.Time;
-
+/**
+ * An abstract blueprint of an event.
+ * 
+ * @author Gustav Strömberg, Anton Dahlin, William Antti
+ */
 public abstract class CustomerEvent extends Event {
 
 	protected Customer customer;
@@ -15,6 +19,8 @@ public abstract class CustomerEvent extends Event {
 	protected EventTypes id;
 	protected boolean queueing = false;
 	private DecimalFormat df = new DecimalFormat("#0.00");
+	
+	
 	
 	public CustomerEvent(Time time, boolean newCustomer, SaloonState ss, EventTypes id) {
 		super(time);
@@ -24,6 +30,12 @@ public abstract class CustomerEvent extends Event {
 			customer = new Customer();
 	}
 	
+	
+	/**
+	 * Creates a string that is used in SaloonState to print test to the user.
+	 * 
+	 * @return String Contaning uppdated data after an event is triggered
+	 */
 	public String toString(){
 		
 		/*old
@@ -35,34 +47,41 @@ public abstract class CustomerEvent extends Event {
 		df.format(getTime().getNumTime()) +"\t" +
 		id + "\t" + 
 		customer.getID() + "\t" + 
-		df.format(ss.getIdleChairs()) + "\t" + 
+		ss.getIdleChairs() + "\t" + 
 		df.format(ss.getStat().getTimeIdle()) + "\t" +
 		df.format(ss.getStat().getTimeQueueing()) + "\t" + 
 		(ss.getQueue() + ss.returnGetQueue()) + "\t" +
 		ss.getStat().getPeopleCut() + "\t" + 
 		ss.getStat().getCustomersLost() + "\t" +
 		ss.getStat().getCustomersReturned() + "\t";
+		
 		return output;
 	}
 	
+	/**
+	 * 
+	 * @return EventType The identity of an event
+	 */
 	public EventTypes getEventType(){
 		return id;
 	} 
 	
+	/**
+	 * 
+	 * @return boolean True if the person is queueing, otherwise false
+	 */
 	public boolean isQueueing(){
 		return queueing;
 	}
 	
+	/**
+	 * 
+	 * @return Customer The customer class
+	 */
 	public Customer getCustomer(){
 		return customer;
 	}
 	
-//Generates a new time (double) that is used when creating new events
-	protected double randomTime(){
-		Random r = new Random();
-		return 2*r.nextDouble();
-		
-	}
 	  
 	
 }

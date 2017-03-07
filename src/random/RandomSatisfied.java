@@ -19,7 +19,7 @@ public class RandomSatisfied {
 	}
 	 //om p är 0.8 så är det 80% chans för true och 20% chans för false
 	public boolean next() {
-	  	return rand.nextDouble() > p;
+	  	return rand.nextDouble() < p;
 	}
 }
 

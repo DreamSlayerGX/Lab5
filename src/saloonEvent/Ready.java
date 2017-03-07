@@ -36,6 +36,7 @@ public class Ready extends CustomerEvent{
 	 * */
 	public void execute(Store store) {
 		//System.out.println("customer "+customer.getID() +" ready at "+getTime());
+		customer.endCutTime(getTime().getNumTime());	
 
 		ss.freeChair();
 		
@@ -43,8 +44,10 @@ public class Ready extends CustomerEvent{
 		if(ss.returnGetQueue() > 0){
 			Customer tmp = super.ss.returnqueuearray();
 			tmp.endQueueTime(getTime().getNumTime());
+			tmp.setCuttingTime(getTime().getNumTime());
+
 			store.storeEvent(new Ready(
-					new Time(getTime().getNumTime() + randomTime()),
+					new Time(getTime().getNumTime() + ss.nextRandCutTime()),
 					tmp,
 					ss,
 					EventTypes.READY));
@@ -54,31 +57,25 @@ public class Ready extends CustomerEvent{
 
 					
 			
-		}
-		else{
-			if(ss.getQueue() > 0){
-				Customer tmp = super.ss.queuearray();
-				tmp.endQueueTime(getTime().getNumTime());
-				store.storeEvent(new Ready(
-						new Time(getTime().getNumTime() + randomTime()),
-						tmp,
-						ss,
-						EventTypes.READY));
-				
-				ss.rmFirstInQueue();;
-				ss.occupyChair();
-				
-						
-			}
+		} else if(ss.getQueue() > 0){
+			Customer tmp = super.ss.queuearray();
+			tmp.endQueueTime(getTime().getNumTime());
+			tmp.setCuttingTime(getTime().getNumTime());
+			store.storeEvent(new Ready(
+					new Time(getTime().getNumTime() + ss.nextRandCutTime()),
+					tmp,
+					ss,
+					EventTypes.READY));
+			
+			ss.rmFirstInQueue();;
+			ss.occupyChair();	
 			
 		}
+			
 
-		customer.setCuttingTime(getTime().getNumTime());
+		if(ss.nextRandSatisfied()){
 
-	
-	//20 % chance that the customer will return
-		if(randomTime()/2 < 0.2){
-			store.storeEvent(new Return(new Time(getTime().getNumTime() + randomTime()/2),
+			store.storeEvent(new Return(new Time(getTime().getNumTime() + ss.nextRandReturnTime()),
 					super.customer,
 					ss,
 					EventTypes.RETURN));
