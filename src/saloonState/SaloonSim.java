@@ -27,7 +27,8 @@ public class SaloonSim extends Simulator{
 		System.out.println("dmin and dmax (return time interval) .: [" + dmin + ", " + dmax + "]");
 		System.out.println("Risk dissatisfied returns: ...........: " + p);
 		System.out.println("Seed used in pseudo random generator .: " + seed);
-		System.out.println("----------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------------");
+		System.out.println("- Time  Event   Id      Idle    TIdle   TWait   InQ     Cut     Lost    Ret -");
 	}
 	public void run(){
 		store.storeEvent(new Enter(new Time(.5), state, EventTypes.ENTER));

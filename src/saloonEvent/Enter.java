@@ -49,7 +49,7 @@ public class Enter extends CustomerEvent {
 			
 
 
-			if(ss.getChairs() == 0 && (ss.returngetQueue()+ss.getQueue() < ss.getQueueSize())){
+			if(ss.getChairs() == 0 && (ss.returnGetQueue()+ss.getQueue() < ss.getQueueSize())){
 				queueing = true;
 				ss.addToQueue(customer);
 				customer.startQueueTime(getTime().getNumTime());

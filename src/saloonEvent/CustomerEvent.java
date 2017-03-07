@@ -35,13 +35,13 @@ public abstract class CustomerEvent extends Event {
 		df.format(getTime().getNumTime()) +"\t" +
 		id + "\t" + 
 		customer.getID() + "\t" + 
-		df.format(ss.getIdle()) + "\t" + 
-		df.format(ss.getTIdle()) + "\t" +
-		df.format(ss.getTWait()) + "\t" + 
-		(ss.getQueue() + ss.returngetQueue()) + "\t" +
-		ss.getCut() + "\t" + 
-		ss.getLost() + "\t" +
-		ss.getReturned() + "\t";
+		df.format(ss.getIdleChairs()) + "\t" + 
+		df.format(ss.getStat().getTimeIdle()) + "\t" +
+		df.format(ss.getStat().getTimeQueueing()) + "\t" + 
+		(ss.getQueue() + ss.returnGetQueue()) + "\t" +
+		ss.getStat().getPeopleCut() + "\t" + 
+		ss.getStat().getCustomersLost() + "\t" +
+		ss.getStat().getCustomersReturned() + "\t";
 		return output;
 	}
 	
