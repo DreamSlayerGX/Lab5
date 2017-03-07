@@ -3,7 +3,6 @@ import saloonEvent.Closing;
 import saloonEvent.Enter;
 import simulator.Event;
 import simulator.Simulator;
-import simulator.State;
 import simulator.Store;
 import simulator.Time;
 
@@ -18,7 +17,7 @@ public class SaloonSim extends Simulator{
 	}
 	public SaloonSim(double closingTime, int chairs, int queue, double enterRate, double hmin, double hmax, double dmin, double dmax, double p, long seed){
 		store = new Store();
-		state = new SaloonState(queue, chairs, enterRate, hmin, hmax, dmin, dmax, p, seed);
+		state = new SaloonState(queue, chairs, enterRate, hmin, hmax, dmin, dmax, p, seed, closingTime);
 		printSimInfo();
 		System.out.println("Closing time of the day ..............: " + closingTime);
 		System.out.println("Total number of chairs ...............: " + chairs);
@@ -41,10 +40,19 @@ public class SaloonSim extends Simulator{
 			
 			Event nxt = store.nextEvent();
 			if(nxt != null){
+				//System.out.println(nxt);
 				nxt.execute(store, state);
 			}
 			if(store.returnlist().size() == 0){
 				state.setFlag(true);
+				System.out.println("-----------------------------------------------------------------------------");
+				System.out.println("Number of customers cut: ......: " + state.getStat().getPeopleCut());
+				System.out.println("Average cutting time...........: ");
+				System.out.println("Average queueing time: ........: "+state.getStat().getAvrageQueueingTime());
+				System.out.println("Largest queue (max NumWaiting) : ");
+				System.out.println("Customers not cut (NumLost) ...: "+state.getStat().getCustomersLost());
+				System.out.println("Dissatisfied customers: .......: "+ state.getStat().getCustomersReturned());
+				System.out.println("Time chairs were idle: ........: "+state.getStat().getTimeIdle());
 			}
 			
 		}	

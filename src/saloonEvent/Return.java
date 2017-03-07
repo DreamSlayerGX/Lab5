@@ -47,7 +47,7 @@ public class Return extends CustomerEvent{
 			customer.setCuttingTime(getTime().getNumTime());
 
 			store.storeEvent(new Ready(
-					new Time(getTime().getNumTime() + randomTime()),
+					new Time(getTime().getNumTime() + ss.nextRandCutTime()),
 					super.customer,
 					ss,
 					EventTypes.READY));
@@ -66,11 +66,13 @@ public class Return extends CustomerEvent{
 				
 			}else{//return kön är full
 				store.storeEvent(new Return(
-						new Time(getTime().getNumTime() + randomTime()),
+						new Time(getTime().getNumTime() + ss.nextRandReturnTime()),
 						ss.rmLastInQueue(),
 						ss,
 						id));
 			}
+			
+			
 		}
 		setChanged();
 		notifyObservers(this);
