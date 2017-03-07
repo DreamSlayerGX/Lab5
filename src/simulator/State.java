@@ -1,8 +1,13 @@
 package simulator;
 
 import java.util.Observable;
-import java.util.Observer;
 
+import java.util.Observer;
+/**
+ * An abstract state.
+ * 
+ * @author Gustav Strömberg, Anton Dahlin, William Antti
+ */
 public abstract class State implements Observer {
 	
 	private boolean flag;

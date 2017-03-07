@@ -25,7 +25,6 @@ public class SaloonState extends State {
 	private final int MAX_QUEUE, MAX_CHAIRS;
 	private int chairs;
 	private final double CLOSETIME;
-	private int numWaiting;// = returnQueue.size()+queue.size(); //för det är antalet som väntar
 	
 	
 	/**
@@ -37,13 +36,12 @@ public class SaloonState extends State {
 	public SaloonState(int queue, int chairs){
 		MAX_QUEUE = queue;
 		MAX_CHAIRS = this.chairs = chairs;
-		numWaiting = 0;
 		CLOSETIME = 12.0;
 		
 		returnQueue = new ArrayList<Customer>();
 		this.queue = new ArrayList<Customer>();
 		
-		stat = new Statistics(this);
+		stat = new Statistics();
 	}
 	
 
@@ -177,29 +175,46 @@ public class SaloonState extends State {
 	public int returnGetQueue(){
 		return returnQueue.size();
 	}
+	
+	/**
+	 * 
+	 * @return int Maximum size of the queue
+	 */
 	public int getQueueSize(){
 		return MAX_QUEUE;
 	}
 	
 	 /**
+	  * Prints the data that comes from an event located in CustomerEvent
 	  * 
-	  * @param output
+	  * @param String output A string containing data from one event
 	  */
 	public void output(String output){
-		System.out.println(output/*+" - Queue: "+getQueue()+" - ReturnQueue "+returngetQueue()*/);
+		System.out.println(output);
 	}
 	
+	/**
+	 * @return int The number of idle chairs
+	 */
 	public int getIdleChairs(){
 		return chairs;
 	}
 	
+	/**
+	 * @return Statistics The statistics class
+	 */
 	public Statistics getStat(){
 		return stat;
 	}
 	
-	
+
+
+
 	/**
-	 * @param Observable o, Object arg
+	 * Updates the statistics class depending on what event is triggered. 
+	 * The data comes from CustomerEvent.
+	 * 
+	 * @param Observable o A CustomerEvent object, Object arg The specific event type
 	 */
 	public void update(Observable o, Object arg) {
 		output(o.toString());
@@ -207,7 +222,7 @@ public class SaloonState extends State {
 		
 		if(ce.getEventType() == EventTypes.ENTER){
       
-      if(ce.isQueueing()){
+			if(ce.isQueueing()){
 				stat.setTimeQueueing(ce.getCustomer().getQueueTime());
 				
 			}
@@ -216,11 +231,10 @@ public class SaloonState extends State {
 				stat.setCustomersLost();
 			}
 	
+		
 			
 		}
-		
 	
-		
 		if(ce.getEventType() == EventTypes.READY){
 			
 			if(ce.getCustomer().getSatisfied()){

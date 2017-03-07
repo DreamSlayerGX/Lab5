@@ -1,22 +1,26 @@
 package saloonState;
 
-
+/**
+ * Takes care of all statistics while the program is running
+ * 
+ * @author Gustav Strömberg
+ *
+ */
 public class Statistics{
-	
-	private SaloonState ss;
-	
-
+	/**
+	 * Variables
+	 */
 	private double timeIdle, timeQueueing;
 	private int customersLost, customersReturned, peopleCut;
 
 	
-	Statistics(SaloonState ss){
-		this.ss = ss;
-	}
 
 //Getters and setters below	
 
 //Idle
+	/**
+	 * @return double timeIdle
+	 */
 	public double getTimeIdle() {
 		return timeIdle;
 	}
@@ -26,6 +30,9 @@ public class Statistics{
 	}
 
 //Queueing
+	/**
+	 * @return double TimeQueueing
+	 */
 	public double getTimeQueueing() {
 		return timeQueueing;
 	}
@@ -35,6 +42,9 @@ public class Statistics{
 	}
 
 //Customers lost
+	/**
+	 * @return double customersLost
+	 */
 	public int getCustomersLost() {
 		return customersLost;
 	}
@@ -44,6 +54,9 @@ public class Statistics{
 	}
 
 //Customers returned
+	/**
+	 * @return int customersReturned
+	 */
 	public int getCustomersReturned() {
 		return customersReturned;
 	}
@@ -53,6 +66,9 @@ public class Statistics{
 	}
 
 //People cut
+	/**
+	 * @return int peopleCut
+	 */
 	public int getPeopleCut() {
 		return peopleCut;
 	}
@@ -64,6 +80,9 @@ public class Statistics{
 
 
 //Avrage queueing time
+	/**
+	 * @return double averge queuetime with timeQueueing/peopleCut
+	 */
 	public double getAvrageQueueingTime(){
 		return (double)(timeQueueing / peopleCut);
 	}

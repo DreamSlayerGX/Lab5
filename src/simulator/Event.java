@@ -22,12 +22,6 @@ public abstract class Event extends Observable {
 	
 	public abstract void execute(Store store, State state);
 	
-	/**
-	 * 
-	 * toString override. Returns the class name
-	 */
-//	public String toString(){
-//		return this.getClass().getSimpleName();
-//	}
+
 
 }
