@@ -6,6 +6,9 @@ import simulator.Time;
 
 public class Customer {
 	
+	/**
+	 * Variables
+	 */
 	private static int counter = 0; 
 	private int id;
 
@@ -16,11 +19,17 @@ public class Customer {
 	
 	Random r = new Random();
 	
+	/**
+	 * Makes the customer a unique id
+	 */
 	public Customer(){
 		id = ++counter;
 		
 	}
-
+	
+	/**
+	 * @return int id
+	 */
 	public int getID(){
 		return id;
 	}
@@ -47,9 +56,12 @@ public class Customer {
 		cutTime += tot;
 	}
 	
-	
 	public void setSatisfied(boolean yesNo){
 		satisfied = yesNo;
+	}
+	
+	public void setLeavingCustomer(boolean yesNo){
+		leavingCustomer = yesNo;
 	}
 	
 	
@@ -64,10 +76,6 @@ public class Customer {
 	
 	public boolean getSatisfied(){
 		return satisfied;
-	}
-	
-	public void setLeavingCustomer(boolean yesNo){
-		leavingCustomer = yesNo;
 	}
 	
 	public boolean leavingCustomer(){

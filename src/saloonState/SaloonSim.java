@@ -11,10 +11,23 @@ public class SaloonSim extends Simulator{
 	private SaloonState state;
 	
 	public static void main(String[] args){	
-		SaloonSim sim = new SaloonSim(7.0, 2,2, 1.2, 1.0, 2.0, 1.0, 2.0,0.5,1116);
+		SaloonSim sim = new SaloonSim(7.0, 1,1, 1.2, 1.0, 2.0, 1.0, 2.0,0.5,1116);
 		
 		sim.run();
 	}
+	/**
+	 * 
+	 * @param closingTime
+	 * @param chairs
+	 * @param queue
+	 * @param enterRate
+	 * @param hmin
+	 * @param hmax
+	 * @param dmin
+	 * @param dmax
+	 * @param p
+	 * @param seed
+	 */
 	public SaloonSim(double closingTime, int chairs, int queue, double enterRate, double hmin, double hmax, double dmin, double dmax, double p, int seed){
 		store = new Store();
 		state = new SaloonState(queue, chairs);
@@ -30,6 +43,9 @@ public class SaloonSim extends Simulator{
 		System.out.println("-----------------------------------------------------------------------------");
 		System.out.println("- Time  Event   Id      Idle    TIdle   TWait   InQ     Cut     Lost    Ret -");
 	}
+	/**
+	 * 
+	 */
 	public void run(){
 		store.storeEvent(new Enter(new Time(.5), state, EventTypes.ENTER));
 
@@ -41,6 +57,16 @@ public class SaloonSim extends Simulator{
 			}
 			if(store.returnlist().size() == 0){
 				state.setFlag(true);
+				System.out.println("-----------------------------------------------------------------------------");
+				System.out.println("Number of customers cut: ......: " + state.getStat().getPeopleCut());
+				System.out.println("Average cutting time...........: " );
+				System.out.println("Average queueing time: ........: " + state.getStat().getAvrageQueueingTime());
+				System.out.println("Largest queue (max NumWaiting) : ");
+				System.out.println("Customers not cut (NumLost) ...: ");
+				System.out.println("Dissatisfied customers: .......: ");
+				System.out.println("Time chairs were idle: ........: ");
+				
+
 			}
 			
 		}	
