@@ -2,7 +2,11 @@ package saloonState;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Random;
 
+import random.ExponentialRandomStream;
+import random.RandomSatisfied;
+import random.UniformRandomStream;
 import saloonEvent.Customer;
 import saloonEvent.CustomerEvent;
 import simulator.State;
@@ -25,26 +29,64 @@ public class SaloonState extends State {
 	private final int MAX_QUEUE, MAX_CHAIRS;
 	private int chairs;
 	private final double CLOSETIME;
+	private int numWaiting;// = returnQueue.size()+queue.size(); //för det är antalet som väntar
 	
-	
+	private ExponentialRandomStream randEnter;
+	private UniformRandomStream randCutTime;
+	private UniformRandomStream randReturnTime;
+	private RandomSatisfied randSatisfied;
+
+
 	/**
 	 * The constructor sets the max amount of chairs and max size of the queue of a specific saloon
 	 * 
 	 * @param queue Maximum number of people that fit in the saloon
 	 * @param chairs The amount of chairs that the saloon has
 	 * */
-	public SaloonState(int queue, int chairs){
+	public SaloonState(int queue, int chairs, double enterRate, double hmin, double hmax, double dmin, double dmax, double p, long seed){
 		MAX_QUEUE = queue;
 		MAX_CHAIRS = this.chairs = chairs;
+		numWaiting = 0;
 		CLOSETIME = 12.0;
+		
+		randEnter = new ExponentialRandomStream(enterRate, seed);
+		randCutTime = new UniformRandomStream(hmin, hmax, seed);
+		randReturnTime = new UniformRandomStream(dmin, dmax, seed);
+		randSatisfied = new RandomSatisfied(p, seed);
 		
 		returnQueue = new ArrayList<Customer>();
 		this.queue = new ArrayList<Customer>();
 		
-		stat = new Statistics();
+		stat = new Statistics(this);
 	}
-	
-
+	/**
+	 * Returns time TO next enter event, relative time
+	 * @return double, amount of time to next enter
+	 */
+	public double nextEnter(){
+		return randEnter.next();
+	}
+	/**
+	 * Get a random time for a haircut
+	 * @return double, amount of time
+	 */
+	public double nextRandCutTime(){
+		return randCutTime.next();
+	}
+	/**
+	 * Get a random time for returning customer
+	 * @return double, amount of time
+	 */
+	public double nextRandReturnTime(){
+		return randReturnTime.next();
+	}
+	/**
+	 * Returns if satisfied, depending on p
+	 * @return true if satisfied, false if dissatisfied
+	 */
+	public boolean nextRandSatisfied(){
+		return randSatisfied.next();
+	}
 	/**
 	 * When called returns first customer in queue
 	 */
@@ -175,46 +217,29 @@ public class SaloonState extends State {
 	public int returnGetQueue(){
 		return returnQueue.size();
 	}
-	
-	/**
-	 * 
-	 * @return int Maximum size of the queue
-	 */
 	public int getQueueSize(){
 		return MAX_QUEUE;
 	}
 	
 	 /**
-	  * Prints the data that comes from an event located in CustomerEvent
 	  * 
-	  * @param String output A string containing data from one event
+	  * @param output
 	  */
 	public void output(String output){
-		System.out.println(output);
+		System.out.println(output/*+" - Queue: "+getQueue()+" - ReturnQueue "+returngetQueue()*/);
 	}
 	
-	/**
-	 * @return int The number of idle chairs
-	 */
 	public int getIdleChairs(){
 		return chairs;
 	}
 	
-	/**
-	 * @return Statistics The statistics class
-	 */
 	public Statistics getStat(){
 		return stat;
 	}
 	
-
-
-
+	
 	/**
-	 * Updates the statistics class depending on what event is triggered. 
-	 * The data comes from CustomerEvent.
-	 * 
-	 * @param Observable o A CustomerEvent object, Object arg The specific event type
+	 * @param Observable o, Object arg
 	 */
 	public void update(Observable o, Object arg) {
 		output(o.toString());
@@ -222,7 +247,7 @@ public class SaloonState extends State {
 		
 		if(ce.getEventType() == EventTypes.ENTER){
       
-			if(ce.isQueueing()){
+      if(ce.isQueueing()){
 				stat.setTimeQueueing(ce.getCustomer().getQueueTime());
 				
 			}
@@ -231,10 +256,11 @@ public class SaloonState extends State {
 				stat.setCustomersLost();
 			}
 	
-		
 			
 		}
+		
 	
+		
 		if(ce.getEventType() == EventTypes.READY){
 			
 			if(ce.getCustomer().getSatisfied()){
@@ -254,4 +280,6 @@ public class SaloonState extends State {
 
 		}
 	}
+	
+	
 }

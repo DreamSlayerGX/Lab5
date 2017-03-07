@@ -1,4 +1,5 @@
 package saloonState;
+import saloonEvent.Closing;
 import saloonEvent.Enter;
 import simulator.Event;
 import simulator.Simulator;
@@ -11,26 +12,13 @@ public class SaloonSim extends Simulator{
 	private SaloonState state;
 	
 	public static void main(String[] args){	
-		SaloonSim sim = new SaloonSim(7.0, 1,1, 1.2, 1.0, 2.0, 1.0, 2.0,0.5,1116);
+		SaloonSim sim = new SaloonSim(7.0, 2,2, 1.2, 1.0, 2.0, 1.0, 2.0,0.5,1116);
 		
 		sim.run();
 	}
-	/**
-	 * 
-	 * @param closingTime
-	 * @param chairs
-	 * @param queue
-	 * @param enterRate
-	 * @param hmin
-	 * @param hmax
-	 * @param dmin
-	 * @param dmax
-	 * @param p
-	 * @param seed
-	 */
-	public SaloonSim(double closingTime, int chairs, int queue, double enterRate, double hmin, double hmax, double dmin, double dmax, double p, int seed){
+	public SaloonSim(double closingTime, int chairs, int queue, double enterRate, double hmin, double hmax, double dmin, double dmax, double p, long seed){
 		store = new Store();
-		state = new SaloonState(queue, chairs);
+		state = new SaloonState(queue, chairs, enterRate, hmin, hmax, dmin, dmax, p, seed);
 		printSimInfo();
 		System.out.println("Closing time of the day ..............: " + closingTime);
 		System.out.println("Total number of chairs ...............: " + chairs);
@@ -43,11 +31,11 @@ public class SaloonSim extends Simulator{
 		System.out.println("-----------------------------------------------------------------------------");
 		System.out.println("- Time  Event   Id      Idle    TIdle   TWait   InQ     Cut     Lost    Ret -");
 	}
-	/**
-	 * 
-	 */
 	public void run(){
-		store.storeEvent(new Enter(new Time(.5), state, EventTypes.ENTER));
+		store.storeEvent(
+				new Enter(new Time(state.nextEnter()),state,
+				EventTypes.ENTER));
+		store.storeEvent(new Closing(new Time(state.getCloseTime())));
 
 		while(!state.getFlag()){
 			
@@ -57,16 +45,6 @@ public class SaloonSim extends Simulator{
 			}
 			if(store.returnlist().size() == 0){
 				state.setFlag(true);
-				System.out.println("-----------------------------------------------------------------------------");
-				System.out.println("Number of customers cut: ......: " + state.getStat().getPeopleCut());
-				System.out.println("Average cutting time...........: " );
-				System.out.println("Average queueing time: ........: " + state.getStat().getAvrageQueueingTime());
-				System.out.println("Largest queue (max NumWaiting) : ");
-				System.out.println("Customers not cut (NumLost) ...: ");
-				System.out.println("Dissatisfied customers: .......: ");
-				System.out.println("Time chairs were idle: ........: ");
-				
-
 			}
 			
 		}	
