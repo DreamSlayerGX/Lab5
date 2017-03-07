@@ -28,8 +28,6 @@ public class SaloonState extends State {
 	private int numWaiting;// = returnQueue.size()+queue.size(); //för det är antalet som väntar
 	
 	
-	
-	
 	/**
 	 * The constructor sets the max amount of chairs and max size of the queue of a specific saloon
 	 * 
@@ -60,13 +58,6 @@ public class SaloonState extends State {
 	 */
 	public Customer returnqueuearray(){
 		return returnQueue.get(0);
-	}
-	
-	/**
-	 * When called adds 1 to numLost
-	 */
-	public void numLostCounter(){
-		numLost++;
 	}
 
 	
@@ -198,24 +189,12 @@ public class SaloonState extends State {
 		System.out.println(output/*+" - Queue: "+getQueue()+" - ReturnQueue "+returngetQueue()*/);
 	}
 	
-	public int getIdle(){
+	public int getIdleChairs(){
 		return chairs;
 	}
 	
-	public double getTIdle(){
-		return stat.getTIdle();
-	}
-	public double getTWait(){
-		return stat.getTWait();
-	}
-	public int getCut(){
-		return stat.getCut();
-	}
-	public int getLost(){
-		return stat.getLost();
-	}
-	public int getReturned(){
-		return stat.getReturned();
+	public Statistics getStat(){
+		return stat;
 	}
 	
 	

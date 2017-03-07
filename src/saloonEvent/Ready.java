@@ -40,7 +40,7 @@ public class Ready extends CustomerEvent{
 		ss.freeChair();
 		
 
-		if(ss.returngetQueue() > 0){
+		if(ss.returnGetQueue() > 0){
 			Customer tmp = super.ss.returnqueuearray();
 			tmp.endQueueTime(getTime().getNumTime());
 			store.storeEvent(new Ready(
@@ -77,11 +77,15 @@ public class Ready extends CustomerEvent{
 
 	
 	//20 % chance that the customer will return
-		if(randomTime()/2 < 0.2)
+		if(randomTime()/2 < 0.2){
 			store.storeEvent(new Return(new Time(getTime().getNumTime() + randomTime()/2),
 					super.customer,
 					ss,
-					EventTypes.RETURN));	
+					EventTypes.RETURN));
+			
+		} else {
+			customer.setSatisfied(true);
+		}
 		
 		setChanged();
 		notifyObservers(this);
