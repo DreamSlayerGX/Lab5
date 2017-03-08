@@ -35,7 +35,7 @@ public class SaloonState extends State {
 	private UniformRandomStream randReturnTime;
 	private RandomSatisfied randSatisfied;
 	
-	private int customerCount;
+	private int customerCount, maxQueueSize;
 
 	/**
 	 * The constructor sets the max amount of chairs and max size of the queue
@@ -163,6 +163,7 @@ public class SaloonState extends State {
 			throw new RuntimeException(
 					"Queue:queue.size >= MAX_QUEUE när metoden anropades");
 		queue.add(customer);
+		checkMaxQueue();
 	}
 
 	/**
@@ -177,8 +178,13 @@ public class SaloonState extends State {
 			throw new RuntimeException(
 					"Return:queue.size >= MAX_QUEUE när metoden anropades");
 		returnQueue.add(customer);
+		checkMaxQueue();
 	}
-
+	public void checkMaxQueue(){
+		if (getQueue() + returnGetQueue() > maxQueueSize){
+			maxQueueSize = getQueue() + returnGetQueue();
+		}
+	}
 	/**
 	 * Removes the first person in the queue
 	 * 
@@ -191,7 +197,9 @@ public class SaloonState extends State {
 					"Det finns inga element i kön att ta bort");
 		queue.remove(0);
 	}
-
+	public int getMaxQueue(){
+		return maxQueueSize;
+	}
 	/**
 	 * Removes the first person in the return queue
 	 * 

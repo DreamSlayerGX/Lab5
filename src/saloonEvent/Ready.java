@@ -37,7 +37,6 @@ public class Ready extends CustomerEvent{
 	public void execute(Store store) {
 		//System.out.println("customer "+customer.getID() +" ready at "+getTime());
 		customer.endCutTime(getTime().getNumTime());	
-		ss.addTimeCutting(customer.getCutTime());
 		
 		ss.freeChair();
 		if(customer.getSatisfied()){
@@ -45,7 +44,7 @@ public class Ready extends CustomerEvent{
 		}
 
 		if(ss.returnGetQueue() > 0){
-			Customer tmp = super.ss.returnqueuearray();
+			Customer tmp = ss.returnqueuearray();
 			tmp.endQueueTime(getTime().getNumTime());
 			//ss.addTimeQueueing(tmp.getQueueTime());
 			tmp.setCuttingTime(getTime().getNumTime());
@@ -62,7 +61,7 @@ public class Ready extends CustomerEvent{
 					
 			
 		} else if(ss.getQueue() > 0){
-			Customer tmp = super.ss.queuearray();
+			Customer tmp = ss.queuearray();
 			tmp.endQueueTime(getTime().getNumTime());
 			//ss.addTimeQueueing(tmp.getQueueTime());
 			tmp.setCuttingTime(getTime().getNumTime());
@@ -86,7 +85,8 @@ public class Ready extends CustomerEvent{
 					EventTypes.RETURN));
 			
 		} else {
-			
+			ss.addTimeCutting(customer.getCutTime());
+
 			customer.setSatisfied(true);
 		}
 		

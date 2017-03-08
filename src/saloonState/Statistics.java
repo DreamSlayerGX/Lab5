@@ -82,6 +82,9 @@ public class Statistics{
 	public void setTimeCutting(double time) {
 		timeCutting+=time;
 	}
+	public double getAverageCuttingTime(){
+		return (double)(timeCutting / peopleCut);
+	}
 	
 
 

@@ -4,6 +4,6 @@ public enum EventTypes {
 	
 	ENTER(),
 	READY(),
-	RETURN();
-
+	RETURN(),
+	CLOSING();
 }

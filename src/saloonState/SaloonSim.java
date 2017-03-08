@@ -1,4 +1,6 @@
 package saloonState;
+import java.text.DecimalFormat;
+
 import saloonEvent.Closing;
 import saloonEvent.Enter;
 import simulator.Event;
@@ -9,10 +11,11 @@ import simulator.Time;
 public class SaloonSim extends Simulator{
 	private Store store;
 	private SaloonState state;
-	
+	private DecimalFormat df = new DecimalFormat("#0.00");
+
 	public static void main(String[] args){	
-		//SaloonSim sim = new SaloonSim(7.0, 2,2, 1.2, 1.0, 2.0, 1.0, 2.0, 0.5, 1116);
-		SaloonSim sim = new SaloonSim(8.0, 2, 5, 2.0, 0.8, 1.2, 1.0, 2.0, 0.1, 1234);
+		SaloonSim sim = new SaloonSim(7.0, 2,2, 1.2, 1.0, 2.0, 1.0, 2.0, 0.5, 1116);
+		//SaloonSim sim = new SaloonSim(8.0, 2, 5, 2.0, 0.8, 1.2, 1.0, 2.0, 0.1, 1234);
 		
 		sim.run();
 	}
@@ -39,12 +42,16 @@ public class SaloonSim extends Simulator{
 		store.storeEvent(
 				new Enter(new Time(state.nextEnter()),state,
 				EventTypes.ENTER));
-		store.storeEvent(new Closing(new Time(state.getCloseTime())));
-
+		//store.storeEvent(new Closing(new Time(state.getCloseTime())));
+		boolean closePrint = false;
 		while(!state.getFlag()){
 			
 			Event nxt = store.nextEvent();
 			if(nxt != null){
+				if(!closePrint && nxt.getTime().getNumTime() > state.getCloseTime()){
+					System.out.println("  "+ state.getCloseTime() +"  (CLOSING)");
+					closePrint = true;
+				}
 				System.out.print(nxt);
 				state.updateStats(nxt.getTime().getNumTime());
 				System.out.println(state);
@@ -55,12 +62,12 @@ public class SaloonSim extends Simulator{
 				state.setFlag(true);
 				System.out.println("-----------------------------------------------------------------------------");
 				System.out.println("Number of customers cut: ......: " + state.getStat().getPeopleCut());
-				System.out.println("Average cutting time...........: ");
-				System.out.println("Average queueing time: ........: "+state.getStat().getAvrageQueueingTime());
-				System.out.println("Largest queue (max NumWaiting) : ");
+				System.out.println("Average cutting time...........: " + df.format(state.getStat().getAverageCuttingTime()));
+				System.out.println("Average queueing time: ........: "+df.format(state.getStat().getAvrageQueueingTime()));
+				System.out.println("Largest queue (max NumWaiting) : " + state.getMaxQueue());
 				System.out.println("Customers not cut (NumLost) ...: "+state.getStat().getCustomersLost());
 				System.out.println("Dissatisfied customers: .......: "+ state.getStat().getCustomersReturned());
-				System.out.println("Time chairs were idle: ........: "+state.getStat().getTimeIdle());
+				System.out.println("Time chairs were idle: ........: "+ df.format(state.getStat().getTimeIdle()));
 			}
 			
 		}	

@@ -9,7 +9,6 @@ public class Customer {
 	/**
 	 * Variables
 	 */
-	private static int counter = 0; 
 	private int id;
 
 	private double queueTime, cutTime, startQueueTime, startCutTime;
@@ -42,7 +41,8 @@ public class Customer {
 	}
 	
 	public void setCuttingTime(double time){
-		cutTime = time;
+		startCutTime = time;
+		//System.out.println("id:"+id + " start cutting at " + time);
 
 	}
 	public void endQueueTime(double time){
@@ -62,6 +62,9 @@ public class Customer {
 	
 	public void setLeavingCustomer(boolean yesNo){
 		leavingCustomer = yesNo;
+	}
+	public void resetCutTime(){
+		cutTime = 0;
 	}
 	
 	

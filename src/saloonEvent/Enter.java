@@ -55,6 +55,7 @@ public class Enter extends CustomerEvent {
 		
 		} else if(ss.getChairs() > 0){
 				ss.occupyChair();
+				customer.setCuttingTime(getTime().getNumTime());
 				store.storeEvent(new Ready(
 						new Time(getTime().getNumTime() + ss.nextRandCutTime()),
 						super.customer,
