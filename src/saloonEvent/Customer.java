@@ -31,7 +31,8 @@ public class Customer {
 
 // Set methods
 	public void startQueueTime(double time) {
-		queueTime = time;
+		startQueueTime = time;
+
 	}
 
 	public void setCuttingTime(double time) {
@@ -40,14 +41,13 @@ public class Customer {
 	}
 
 	public void endQueueTime(double time) {
-		double tot = time - this.startQueueTime;
-		this.startQueueTime = 0;
+		double tot = time - startQueueTime;
 		queueTime += tot;
+		
 	}
 
 	public void endCutTime(double time) {
 		double tot = time - this.startCutTime;
-		this.startCutTime = 0;
 		cutTime += tot;
 	}
 

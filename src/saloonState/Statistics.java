@@ -93,7 +93,7 @@ public class Statistics {
 	 * @return double averge queuetime with timeQueueing/peopleCut
 	 */
 	public double getAvrageQueueingTime() {
-		return (double) (timeQueueing / peopleCut);
+		return  (getTimeQueueing() / getPeopleCut());
 	}
 
 }

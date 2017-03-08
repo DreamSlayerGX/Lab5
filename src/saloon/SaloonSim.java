@@ -20,11 +20,11 @@ public class SaloonSim extends Simulator {
 	private View view;
 
 	public static void main(String[] args) {
-		SaloonSim sim = new SaloonSim(7.0, 2, 2, 1.2, 1.0, 2.0, 1.0, 2.0, 0.5, 1116);
+		//SaloonSim sim = new SaloonSim(7.0, 2, 2, 1.2, 1.0, 2.0, 1.0, 2.0, 0.5, 1116);
 			
 		//SaloonSim sim = new SaloonSim(8.0, 3, 4, 3.0, 0.8, 1.2, 2.0, 3.0, 0.25, 1116);
 		
-		//SaloonSim sim = new SaloonSim(8.0, 2, 5, 2.0, 0.8, 1.2, 1.0, 2.0, 0.1, 1234);
+		SaloonSim sim = new SaloonSim(8.0, 2, 5, 2.0, 0.8, 1.2, 1.0, 2.0, 0.0, 1234);
 
 		sim.run();
 	}
