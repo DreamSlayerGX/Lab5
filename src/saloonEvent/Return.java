@@ -39,7 +39,10 @@ public class Return extends CustomerEvent{
 	 */
 	public void execute(Store store) {
 		//System.out.println("customer "+customer.getID() +" returns at "+getTime());
-
+		if(customer.getSatisfied()){
+			ss.addCustomerReturned();
+			customer.setSatisfied(false);
+		}
 		//om ledig stol finns
 		if(ss.getChairs() > 0){
 			ss.occupyChair();
@@ -60,14 +63,18 @@ public class Return extends CustomerEvent{
 		}else if(ss.returnGetQueue()+ss.getQueue() >= ss.getQueueSize()){//full k�
 
 			if(ss.getQueue() > 0){//det finns någon i den vanliga kön
-				ss.rmLastInQueue().setLeavingCustomer(true); // Sets the removed customer to "leaving"
+				Customer sacked = ss.rmLastInQueue();
+				sacked.setLeavingCustomer(true); // Sets the removed customer to "leaving"
+				sacked.startQueueTime(getTime().getNumTime());
+				ss.addTimeQueueing(-sacked.getQueueTime());
+				ss.addCustomerLost();
 				ss.addToReturnQueue(customer);
 				customer.startQueueTime(getTime().getNumTime());
 				
 			}else{//return kön är full
 				store.storeEvent(new Return(
 						new Time(getTime().getNumTime() + ss.nextRandReturnTime()),
-						ss.rmLastInQueue(),
+						customer,
 						ss,
 						id));
 			}

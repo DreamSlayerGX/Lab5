@@ -39,33 +39,34 @@ public class Enter extends CustomerEvent {
 	 * */
 	
 	public void execute(Store store) {
-
-		if(getTime().getNumTime() < ss.getCloseTime()){
+		double nextTime = getTime().getNumTime() + ss.nextEnter();
+		if(nextTime < ss.getCloseTime()){
 			store.storeEvent(new Enter(
-					new Time(getTime().getNumTime() + ss.nextEnter()),
+					new Time(nextTime),
 					ss, 
 					id));
-			
+		}
 			
 
-			if(ss.getChairs() == 0 && (ss.returnGetQueue()+ss.getQueue() < ss.getQueueSize())){
-				queueing = true;
-				ss.addToQueue(customer);
-				customer.startQueueTime(getTime().getNumTime());
-			
-			} else if(ss.getChairs() > 0){
-					ss.occupyChair();
-					store.storeEvent(new Ready(
-							new Time(getTime().getNumTime() + ss.nextRandCutTime()),
-							super.customer,
-							ss,
-							EventTypes.READY));
-			} else {
-				customer.setLeavingCustomer(true);
-			}
-			setChanged();
-			notifyObservers(this);
+		if(ss.getChairs() == 0 && (ss.returnGetQueue()+ss.getQueue() < ss.getQueueSize())){
+			queueing = true;
+			ss.addToQueue(customer);
+			customer.startQueueTime(getTime().getNumTime());
+		
+		} else if(ss.getChairs() > 0){
+				ss.occupyChair();
+				store.storeEvent(new Ready(
+						new Time(getTime().getNumTime() + ss.nextRandCutTime()),
+						super.customer,
+						ss,
+						EventTypes.READY));
+		} else {
+			customer.setLeavingCustomer(true);
+			ss.addCustomerLost();
 		}
+		setChanged();
+		notifyObservers(this);
+		
 	
 	}
 	public void execute(Store store, State state) {

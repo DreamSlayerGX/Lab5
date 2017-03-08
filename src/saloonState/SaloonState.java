@@ -1,5 +1,6 @@
 package saloonState;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -33,6 +34,8 @@ public class SaloonState extends State {
 	private UniformRandomStream randCutTime;
 	private UniformRandomStream randReturnTime;
 	private RandomSatisfied randSatisfied;
+	
+	private int customerCount;
 
 	/**
 	 * The constructor sets the max amount of chairs and max size of the queue
@@ -43,7 +46,12 @@ public class SaloonState extends State {
 	 * @param chairs
 	 *            The amount of chairs that the saloon has
 	 * */
-	public SaloonState(int queue, int chairs, double enterRate, double hmin, double hmax, double dmin, double dmax, double p, long seed, double closingTime){
+	public SaloonState(int queue, int chairs, 
+					   double enterRate, 
+					   double hmin, double hmax, 
+					   double dmin, double dmax, 
+					   double p, long seed, 
+					   double closingTime){
 		MAX_QUEUE = queue;
 		MAX_CHAIRS = this.chairs = chairs;
 		CLOSETIME = closingTime;
@@ -67,7 +75,9 @@ public class SaloonState extends State {
 	public double nextEnter() {
 		return randEnter.next();
 	}
-
+	public int getNextID(){
+		return customerCount++;
+	}
 	/**
 	 * Get a random time for a haircut
 	 * 
@@ -269,6 +279,18 @@ public class SaloonState extends State {
 	public Statistics getStat() {
 		return stat;
 	}
+	public String toString(){
+		DecimalFormat df = new DecimalFormat("#0.00");
+		String output = "" +
+				getIdleChairs() + "\t" + 
+				df.format(getStat().getTimeIdle()) + "\t" +
+				df.format(getStat().getTimeQueueing()) + "\t" + 
+				(getQueue() + returnGetQueue()) + "\t" +
+				getStat().getPeopleCut() + "\t" + 
+				getStat().getCustomersLost() + "\t" +
+				getStat().getCustomersReturned() + "\t";
+		return output;
+	}
 
 	/**
 	 * Updates the statistics class depending on what event is triggered. The
@@ -283,12 +305,12 @@ public class SaloonState extends State {
 		if (ce.getEventType() == EventTypes.ENTER) {
 
 			if (ce.isQueueing()) {
-				stat.setTimeQueueing(ce.getCustomer().getQueueTime());
+				//stat.setTimeQueueing(ce.getCustomer().getQueueTime());
 
 			}
 
 			if (ce.getCustomer().leavingCustomer()) {
-				stat.setCustomersLost();
+				//stat.setCustomersLost();
 			}
 
 		}
@@ -296,7 +318,7 @@ public class SaloonState extends State {
 		if (ce.getEventType() == EventTypes.READY) {
 
 			if (ce.getCustomer().getSatisfied()) {
-				stat.setPeopleCut();
+				//stat.setPeopleCut();
 
 			}
 
@@ -304,13 +326,34 @@ public class SaloonState extends State {
 
 		if (ce.getEventType() == EventTypes.RETURN) {
 
-			stat.setCustomersReturned();
+			//stat.setCustomersReturned();
 
 		}
 		
-		double deltaTime = ce.getTime().getNumTime() - previousEventTime;
+		
+		//output(o.toString());
+	}
+	public void addCustomerReturned(){
+		stat.setCustomersReturned();
+	}
+	
+	public void addPeopleCut(){
+		stat.setPeopleCut();
+	}
+	public void addCustomerLost(){
+		stat.setCustomersLost();
+	}
+	public void addTimeQueueing(double time){
+		stat.setTimeQueueing(time);
+	}
+	public void addTimeCutting(double time){
+		stat.setTimeCutting(time);
+	}
+	public void updateStats(double time){
+		
+		double deltaTime = time - previousEventTime;
 		stat.setTimeIdle(deltaTime * getIdleChairs());
-		previousEventTime = ce.getTime().getNumTime();
-		output(o.toString());
+		stat.setTimeQueueing(deltaTime * getQueue());
+		previousEventTime = time;
 	}
 }
