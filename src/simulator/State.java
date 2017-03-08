@@ -3,27 +3,28 @@ package simulator;
 import java.util.Observable;
 
 import java.util.Observer;
+
 /**
- * An abstract state.
+ * An abstract state. Keeps / stores the data during the simulation.
  * 
- * @author Gustav Strömberg, Anton Dahlin, William Antti
+ * @author Gustav , Anton , William 
  */
-public abstract class State implements Observer {
-	
-	private boolean flag;
-	
-	public State(){
-		flag = false;
-	}
-	public void setFlag(boolean value){
+public abstract class State{
+
+	private boolean flag = false;
+
+	/**
+	 * @param value boolean changes the value of the flag
+	 */
+	public void setFlag(boolean value) {
 		flag = value;
 	}
-	
-	public boolean getFlag(){
+
+	/**
+	 * @return boolean false if simulation is running
+	 */
+	public boolean getFlag() {
 		return flag;
 	}
-	
-	
-	public abstract void update(Observable o, Object arg);
 
 }

@@ -34,7 +34,7 @@ public class SaloonState extends State {
 	private UniformRandomStream randCutTime;
 	private UniformRandomStream randReturnTime;
 	private RandomSatisfied randSatisfied;
-	
+
 	private int customerCount, maxQueueSize;
 
 	/**
@@ -46,12 +46,9 @@ public class SaloonState extends State {
 	 * @param chairs
 	 *            The amount of chairs that the saloon has
 	 * */
-	public SaloonState(int queue, int chairs, 
-					   double enterRate, 
-					   double hmin, double hmax, 
-					   double dmin, double dmax, 
-					   double p, long seed, 
-					   double closingTime){
+	public SaloonState(int queue, int chairs, double enterRate, double hmin,
+			double hmax, double dmin, double dmax, double p, long seed,
+			double closingTime) {
 		MAX_QUEUE = queue;
 		MAX_CHAIRS = this.chairs = chairs;
 		CLOSETIME = closingTime;
@@ -75,9 +72,11 @@ public class SaloonState extends State {
 	public double nextEnter() {
 		return randEnter.next();
 	}
-	public int getNextID(){
+
+	public int getNextID() {
 		return customerCount++;
 	}
+
 	/**
 	 * Get a random time for a haircut
 	 * 
@@ -180,11 +179,13 @@ public class SaloonState extends State {
 		returnQueue.add(customer);
 		checkMaxQueue();
 	}
-	public void checkMaxQueue(){
-		if (getQueue() + returnGetQueue() > maxQueueSize){
+
+	public void checkMaxQueue() {
+		if (getQueue() + returnGetQueue() > maxQueueSize) {
 			maxQueueSize = getQueue() + returnGetQueue();
 		}
 	}
+
 	/**
 	 * Removes the first person in the queue
 	 * 
@@ -197,9 +198,11 @@ public class SaloonState extends State {
 					"Det finns inga element i kön att ta bort");
 		queue.remove(0);
 	}
-	public int getMaxQueue(){
+
+	public int getMaxQueue() {
 		return maxQueueSize;
 	}
+
 	/**
 	 * Removes the first person in the return queue
 	 * 
@@ -287,81 +290,62 @@ public class SaloonState extends State {
 	public Statistics getStat() {
 		return stat;
 	}
-	public String toString(){
+	/**
+	 * Prints the current state of saloon
+	 */
+	public String toString() {
 		DecimalFormat df = new DecimalFormat("#0.00");
-		String output = "" +
-				getIdleChairs() + "\t" + 
-				df.format(getStat().getTimeIdle()) + "\t" +
-				df.format(getStat().getTimeQueueing()) + "\t" + 
-				(getQueue() + returnGetQueue()) + "\t" +
-				getStat().getPeopleCut() + "\t" + 
-				getStat().getCustomersLost() + "\t" +
-				getStat().getCustomersReturned() + "\t";
+		String output = "" + getIdleChairs() + "\t"
+				+ df.format(getStat().getTimeIdle()) + "\t"
+				+ df.format(getStat().getTimeQueueing()) + "\t"
+				+ (getQueue() + returnGetQueue()) + "\t"
+				+ getStat().getPeopleCut() + "\t"
+				+ getStat().getCustomersLost() + "\t"
+				+ getStat().getCustomersReturned() + "\t";
 		return output;
 	}
 
 	/**
-	 * Updates the statistics class depending on what event is triggered. The
-	 * data comes from CustomerEvent.
-	 * 
-	 * @param Observable
-	 *            o A CustomerEvent object, Object arg The specific event type
+	 * Increments the people cut by one
 	 */
-	public void update(Observable o, Object arg) {
-		CustomerEvent ce = (CustomerEvent) arg;
-
-		if (ce.getEventType() == EventTypes.ENTER) {
-
-			if (ce.isQueueing()) {
-				//stat.setTimeQueueing(ce.getCustomer().getQueueTime());
-
-			}
-
-			if (ce.getCustomer().leavingCustomer()) {
-				//stat.setCustomersLost();
-			}
-
-		}
-
-		if (ce.getEventType() == EventTypes.READY) {
-
-			if (ce.getCustomer().getSatisfied()) {
-				//stat.setPeopleCut();
-
-			}
-
-		}
-
-		if (ce.getEventType() == EventTypes.RETURN) {
-
-			//stat.setCustomersReturned();
-
-		}
-		
-		
-		//output(o.toString());
-	}
-	public void addCustomerReturned(){
+	public void addCustomerReturned() {
 		stat.setCustomersReturned();
 	}
-	
-	public void addPeopleCut(){
+	/**
+	 * add 1 person to amount of people cut
+	 */
+	public void addPeopleCut() {
 		stat.setPeopleCut();
 	}
-	public void addCustomerLost(){
+	/**
+	 * add 1 person to amount of people cut
+	 */
+	public void addCustomerLost() {
 		stat.setCustomersLost();
 	}
-	public void addTimeQueueing(double time){
+	/**
+	 * add time to total amount of time queueing
+	 * @param time double, amount of time
+	 */
+	public void addTimeQueueing(double time) {
 		stat.setTimeQueueing(time);
 	}
-	public void addTimeCutting(double time){
+	/**
+	 * add time to total amount of time cutting
+	 * @param time double, amount of time
+	 */
+	public void addTimeCutting(double time) {
 		stat.setTimeCutting(time);
 	}
-	public void updateStats(double time){
-		
+	/**
+	 * Calculates TimeIdle and TimeQueueing
+	 * @param time 
+	 */
+	public void updateStats(double time) {
+
 		double deltaTime = time - previousEventTime;
 		stat.setTimeIdle(deltaTime * getIdleChairs());
-		stat.setTimeQueueing(deltaTime * getQueue());
+		stat.setTimeQueueing(deltaTime * (getQueue()+returnGetQueue()));
 		previousEventTime = time;
 	}
 }

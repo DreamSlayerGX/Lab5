@@ -3,86 +3,81 @@ package saloonEvent;
 import java.util.Random;
 
 import simulator.Time;
-
+/**
+ *  A customer and its awareness of time
+ * @author Anton, Gustav, William
+ *
+ */
 public class Customer {
-	
-	/**
-	 * Variables
-	 */
+
 	private int id;
-
 	private double queueTime, cutTime, startQueueTime, startCutTime;
-	private boolean satisfied, leavingCustomer;
+	private boolean satisfied;
 
-
-	
-	Random r = new Random();
-	
 	/**
 	 * Makes the customer a unique id
 	 */
-	public Customer(int id){
+	public Customer(int id) {
 		this.id = id;
 		satisfied = true;
 	}
 	
 	/**
-	 * @return int id
+	 * @return int id of the client
 	 */
-	public int getID(){
+	public int getID() {
 		return id;
 	}
-	
 
-	
-//Set methods
-	public void startQueueTime(double time){
+// Set methods
+	public void startQueueTime(double time) {
 		queueTime = time;
 	}
-	
-	public void setCuttingTime(double time){
+
+	public void setCuttingTime(double time) {
 		startCutTime = time;
-		//System.out.println("id:"+id + " start cutting at " + time);
 
 	}
-	public void endQueueTime(double time){
-		double tot = time-this.startQueueTime;
+
+	public void endQueueTime(double time) {
+		double tot = time - this.startQueueTime;
 		this.startQueueTime = 0;
 		queueTime += tot;
 	}
-	public void endCutTime(double time){
-		double tot = time-this.startCutTime;
+
+	public void endCutTime(double time) {
+		double tot = time - this.startCutTime;
 		this.startCutTime = 0;
 		cutTime += tot;
 	}
-	
-	public void setSatisfied(boolean yesNo){
+
+	public void setSatisfied(boolean yesNo) {
 		satisfied = yesNo;
 	}
-	
-	public void setLeavingCustomer(boolean yesNo){
-		leavingCustomer = yesNo;
-	}
-	public void resetCutTime(){
-		cutTime = 0;
-	}
-	
-	
-//Get methods
-	public double getQueueTime(){
+
+
+// Get methods
+	/**
+	 * 
+	 * @return double queueTime
+	 */
+	public double getQueueTime() {
 		return queueTime;
 	}
-	
-	public double getCutTime(){
+	/**
+	 * 
+	 * @return double cutTime
+	 */
+	public double getCutTime() {
 		return cutTime;
 	}
-	
-	public boolean getSatisfied(){
+	/**
+	 * 
+	 * @return boolean satisfied
+	 */
+	public boolean getSatisfied() {
 		return satisfied;
 	}
-	
-	public boolean leavingCustomer(){
-		return leavingCustomer;
-	}
+
 
 }

@@ -1,104 +1,87 @@
 package saloonEvent;
 
-import saloonState.EventTypes;
 import saloonState.SaloonState;
 import simulator.State;
 import simulator.Store;
 import simulator.Time;
 
 /**
+ * Marks that a customer is cut and a new chair is available
+ * 
  * @author Anton, Gustav, William
  * */
-public class Ready extends CustomerEvent{
-	
-	
+public class Ready extends CustomerEvent {
+
 	/**
-	 * Constructor that calls the parent's constructor to set time and creating a
-	 * new customer that is connected to this event.
+	 * Constructor that calls the parent's constructor to set time and creating
+	 * a new customer that is connected to this event.
 	 * 
-	 * @param Time A Time-object.
+	 * @param Time
+	 *            a Time-object.
 	 * */
-	public Ready(Time time, Customer customer, SaloonState ss, EventTypes id) {
-		super(time, false, ss, id);
+	public Ready(Time time, Customer customer, SaloonState ss) {
+		super(time, false, ss);
 		super.customer = customer;
-		this.addObserver(ss);
-		
-		
+
+
 	}
-	
-	
+
 	/**
-	 * Executes an event. Removes customer from cutting chair, checks if people are in the queues to replace the customer on the chair, 
-	 * this method sometimes randomly creates a return event.
+	 * Executes an event. Removes customer from cutting chair, checks if people
+	 * are in the queues to replace the customer on the chair, this method
+	 * sometimes randomly creates a return event.
 	 * 
-	 * @param Time Time-object to set time to new events
-	 * @param Store To store new object in the store-array
+	 * @param Time
+	 *            time-object to set time to new events
+	 * @param Store
+	 *            to store new object in the store-array
 	 * */
-	public void execute(Store store) {
-		//System.out.println("customer "+customer.getID() +" ready at "+getTime());
-		customer.endCutTime(getTime().getNumTime());	
+	public void execute(Store store, State state) {
 		
+		ss = (SaloonState) state;
+		customer.endCutTime(getTime().getNumTime());
 		ss.freeChair();
-		if(customer.getSatisfied()){
+		
+		if (customer.getSatisfied()) {
 			ss.addPeopleCut();
-		}
-
-		if(ss.returnGetQueue() > 0){
-			Customer tmp = ss.returnqueuearray();
-			tmp.endQueueTime(getTime().getNumTime());
-			//ss.addTimeQueueing(tmp.getQueueTime());
-			tmp.setCuttingTime(getTime().getNumTime());
-
+		}	
+		
+		
+		if(ss.getQueue() + ss.returnGetQueue() > 0){
+			Customer nextCustomer;
+			
+			if(ss.returnGetQueue() > 0){
+				nextCustomer = ss.returnqueuearray();
+				ss.rmFirstInReturnQueue();
+				
+			} else {
+				nextCustomer = ss.queuearray();
+				ss.rmFirstInQueue();
+				
+			}
+			nextCustomer.endQueueTime(getTime().getNumTime());
+			nextCustomer.setCuttingTime(getTime().getNumTime());
+			
 			store.storeEvent(new Ready(
 					new Time(getTime().getNumTime() + ss.nextRandCutTime()),
-					tmp,
-					ss,
-					EventTypes.READY));
-
-			ss.rmFirstInReturnQueue();
+					nextCustomer,
+					ss));
+			
 			ss.occupyChair();
-
-					
-			
-		} else if(ss.getQueue() > 0){
-			Customer tmp = ss.queuearray();
-			tmp.endQueueTime(getTime().getNumTime());
-			//ss.addTimeQueueing(tmp.getQueueTime());
-			tmp.setCuttingTime(getTime().getNumTime());
-			store.storeEvent(new Ready(
-					new Time(getTime().getNumTime() + ss.nextRandCutTime()),
-					tmp,
-					ss,
-					EventTypes.READY));
-			
-			ss.rmFirstInQueue();
-			ss.occupyChair();	
-			
 		}
-			
 
-		if(ss.nextRandSatisfied()){
 
-			store.storeEvent(new Return(new Time(getTime().getNumTime() + ss.nextRandReturnTime()),
-					super.customer,
-					ss,
-					EventTypes.RETURN));
-			
+		if (ss.nextRandSatisfied()) {
+
+			store.storeEvent(new Return(
+					new Time(getTime().getNumTime() + ss.nextRandReturnTime()),
+					customer, ss));
+
 		} else {
 			ss.addTimeCutting(customer.getCutTime());
-
 			customer.setSatisfied(true);
 		}
-		
-		setChanged();
-		notifyObservers(this);
 	}
-
-
 	
-	public void execute(Store store, State state) {
-		ss = (SaloonState) state;
-		execute(store);
-	}
 
 }
