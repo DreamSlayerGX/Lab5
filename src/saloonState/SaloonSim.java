@@ -11,11 +11,16 @@ public class SaloonSim extends Simulator{
 	private SaloonState state;
 	
 	public static void main(String[] args){	
-		SaloonSim sim = new SaloonSim(7.0, 2,2, 1.2, 1.0, 2.0, 1.0, 2.0,0.5,1116);
+		//SaloonSim sim = new SaloonSim(7.0, 2,2, 1.2, 1.0, 2.0, 1.0, 2.0, 0.5, 1116);
+		SaloonSim sim = new SaloonSim(8.0, 2, 5, 2.0, 0.8, 1.2, 1.0, 2.0, 0.1, 1234);
 		
 		sim.run();
 	}
-	public SaloonSim(double closingTime, int chairs, int queue, double enterRate, double hmin, double hmax, double dmin, double dmax, double p, long seed){
+	public SaloonSim(double closingTime, int chairs, 
+			int queue, double enterRate, 
+			double hmin, double hmax, 
+			double dmin, double dmax, 
+			double p, long seed){
 		store = new Store();
 		state = new SaloonState(queue, chairs, enterRate, hmin, hmax, dmin, dmax, p, seed, closingTime);
 		printSimInfo();
@@ -40,7 +45,10 @@ public class SaloonSim extends Simulator{
 			
 			Event nxt = store.nextEvent();
 			if(nxt != null){
-				//System.out.println(nxt);
+				System.out.print(nxt);
+				state.updateStats(nxt.getTime().getNumTime());
+				System.out.println(state);
+				
 				nxt.execute(store, state);
 			}
 			if(store.returnlist().size() == 0){

@@ -17,8 +17,10 @@ public class Closing extends Event {
 
 
 	public void execute(Store store, State state) {
-		System.out.println("  " + df.format(getTime().getNumTime()) +" (CLOSING)");
+		//System.out.println("  " + df.format(getTime().getNumTime()) +" (CLOSING)");
 		
 	}
-
+	public String toString(){
+		return "  (CLOSING)";
+	}
 }

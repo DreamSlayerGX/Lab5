@@ -27,7 +27,7 @@ public abstract class CustomerEvent extends Event {
 		this.ss = ss;
 		this.id = id;
 		if(newCustomer)
-			customer = new Customer();
+			customer = new Customer(ss.getNextID());
 	}
 	
 	
@@ -46,14 +46,14 @@ public abstract class CustomerEvent extends Event {
 		String output = "  " +
 		df.format(getTime().getNumTime()) +"\t" +
 		id + "\t" + 
-		customer.getID() + "\t" + 
+		customer.getID() + "\t" /*+ 
 		ss.getIdleChairs() + "\t" + 
 		df.format(ss.getStat().getTimeIdle()) + "\t" +
 		df.format(ss.getStat().getTimeQueueing()) + "\t" + 
 		(ss.getQueue() + ss.returnGetQueue()) + "\t" +
 		ss.getStat().getPeopleCut() + "\t" + 
 		ss.getStat().getCustomersLost() + "\t" +
-		ss.getStat().getCustomersReturned() + "\t";
+		ss.getStat().getCustomersReturned() + "\t"*/;
 		
 		return output;
 	}

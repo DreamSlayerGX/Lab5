@@ -37,13 +37,17 @@ public class Ready extends CustomerEvent{
 	public void execute(Store store) {
 		//System.out.println("customer "+customer.getID() +" ready at "+getTime());
 		customer.endCutTime(getTime().getNumTime());	
-
-		ss.freeChair();
+		ss.addTimeCutting(customer.getCutTime());
 		
+		ss.freeChair();
+		if(customer.getSatisfied()){
+			ss.addPeopleCut();
+		}
 
 		if(ss.returnGetQueue() > 0){
 			Customer tmp = super.ss.returnqueuearray();
 			tmp.endQueueTime(getTime().getNumTime());
+			//ss.addTimeQueueing(tmp.getQueueTime());
 			tmp.setCuttingTime(getTime().getNumTime());
 
 			store.storeEvent(new Ready(
@@ -60,6 +64,7 @@ public class Ready extends CustomerEvent{
 		} else if(ss.getQueue() > 0){
 			Customer tmp = super.ss.queuearray();
 			tmp.endQueueTime(getTime().getNumTime());
+			//ss.addTimeQueueing(tmp.getQueueTime());
 			tmp.setCuttingTime(getTime().getNumTime());
 			store.storeEvent(new Ready(
 					new Time(getTime().getNumTime() + ss.nextRandCutTime()),
@@ -67,7 +72,7 @@ public class Ready extends CustomerEvent{
 					ss,
 					EventTypes.READY));
 			
-			ss.rmFirstInQueue();;
+			ss.rmFirstInQueue();
 			ss.occupyChair();	
 			
 		}
@@ -81,6 +86,7 @@ public class Ready extends CustomerEvent{
 					EventTypes.RETURN));
 			
 		} else {
+			
 			customer.setSatisfied(true);
 		}
 		

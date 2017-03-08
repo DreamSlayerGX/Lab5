@@ -22,9 +22,9 @@ public class Customer {
 	/**
 	 * Makes the customer a unique id
 	 */
-	public Customer(){
-		id = counter++;
-		
+	public Customer(int id){
+		this.id = id;
+		satisfied = true;
 	}
 	
 	/**

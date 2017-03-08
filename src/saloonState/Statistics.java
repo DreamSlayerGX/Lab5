@@ -12,7 +12,7 @@ public class Statistics{
 	/**
 	 * Variables
 	 */
-	private double timeIdle, timeQueueing;
+	private double timeIdle, timeQueueing, timeCutting;
 	private int customersLost, customersReturned, peopleCut;
 
 	
@@ -42,6 +42,7 @@ public class Statistics{
 	public void setTimeQueueing(double timeQueueing) {
 		this.timeQueueing += timeQueueing;
 	}
+	
 
 //Customers lost
 	/**
@@ -77,6 +78,9 @@ public class Statistics{
 
 	public void setPeopleCut() {
 		peopleCut++;
+	}
+	public void setTimeCutting(double time) {
+		timeCutting+=time;
 	}
 	
 
